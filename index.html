@@ -48,6 +48,39 @@ button{font-family:var(--f-body);cursor:pointer;}
 ::-webkit-scrollbar-track{background:#3A2C1C;}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
 
+/* ── WELCOME SPLASH ─────────────────────────────────── */
+#welcome-splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--obsidian-2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
+  animation:splashFade 0.6s ease-out 2.4s forwards;
+  pointer-events:none;
+}
+#welcome-splash .splash-logo{
+  font-family:var(--f-display);font-size:clamp(1.5rem,4vw,2.6rem);
+  font-weight:300;letter-spacing:0.06em;color:var(--cream);
+  opacity:0;animation:splashIn 0.8s ease-out 0.2s forwards;
+}
+#welcome-splash .splash-logo em{color:var(--gold);font-style:normal;}
+#welcome-splash .splash-line{
+  width:60px;height:1px;background:var(--gold);
+  opacity:0;animation:splashIn 0.8s ease-out 0.5s forwards;
+}
+#welcome-splash .splash-sub{
+  font-size:clamp(0.7rem,2vw,0.85rem);letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--cream-dim);font-weight:400;
+  opacity:0;animation:splashIn 0.8s ease-out 0.7s forwards;
+  text-align:center;padding:0 1rem;
+}
+@keyframes splashIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes splashFade{
+  from{opacity:1;pointer-events:auto;}
+  to{opacity:0;pointer-events:none;}
+}
+
 /* ── TOPBAR ─────────────────────────────────────────── */
 .topbar{
   background:var(--obsidian-2);
@@ -448,58 +481,56 @@ button{font-family:var(--f-body);cursor:pointer;}
 }
 .video-play-btn:hover{background:var(--gold);color:var(--obsidian);transform:scale(1.08);}
 
-/* ── IN-PAGE VIDEO PLAYER ───────────────────────── */
-.inpage-video-wrap{
+/* ── YOUTUBE EMBED ──────────────────────────────── */
+.yt-wrap{
   position:relative;
-  max-width:860px;margin:0 auto;
+  max-width:900px;margin:0 auto;
   border-radius:4px;overflow:hidden;
   border:1px solid var(--line);
   box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  aspect-ratio:16/9;
+  background:#1a1208;
+  cursor:pointer;
 }
-.inpage-video{
-  width:100%;display:block;
-  aspect-ratio:16/9;background:#1a1208;
-  border-radius:4px;
+.yt-thumb{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform 0.6s var(--ease-out), opacity 0.3s;
 }
-.video-play-overlay{
+.yt-wrap:hover .yt-thumb{transform:scale(1.03);}
+.yt-overlay{
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:1.2rem;cursor:pointer;
-  background:linear-gradient(rgba(43,32,24,0.4),rgba(43,32,24,0.6));
+  gap:1.2rem;
+  background:linear-gradient(rgba(43,32,24,0.25),rgba(43,32,24,0.55));
   transition:background 0.3s;
 }
-.video-play-overlay:hover{background:linear-gradient(rgba(43,32,24,0.2),rgba(43,32,24,0.45));}
-.video-play-overlay.hidden{display:none;}
-.video-play-circle{
-  width:80px;height:80px;border-radius:50%;
+.yt-wrap:hover .yt-overlay{background:linear-gradient(rgba(43,32,24,0.1),rgba(43,32,24,0.4));}
+.yt-play-btn{
+  width:84px;height:84px;border-radius:50%;
   border:2.5px solid var(--gold);
   background:rgba(201,145,46,0.15);
   backdrop-filter:blur(8px);
   display:flex;align-items:center;justify-content:center;
   color:var(--gold);
-  transition:transform 0.3s,background 0.3s;
+  transition:transform 0.3s var(--ease-out),background 0.3s,color 0.3s;
 }
-.video-play-overlay:hover .video-play-circle{
-  transform:scale(1.1);
-  background:var(--gold);color:var(--obsidian);
+.yt-wrap:hover .yt-play-btn{
+  transform:scale(1.12);
+  background:var(--gold);
+  color:#1a1208;
 }
-.video-play-circle svg{margin-left:4px;}
-.video-overlay-text{
+.yt-play-btn svg{margin-left:5px;}
+.yt-label{
   font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;
   color:var(--cream);font-weight:500;
+  text-shadow:0 1px 8px rgba(0,0,0,0.5);
 }
-.video-upload-hint{
-  display:flex;align-items:center;gap:0.6rem;justify-content:center;
-  margin-top:1.5rem;
-  font-size:0.78rem;color:rgba(250,243,227,0.45);
-  max-width:600px;margin-left:auto;margin-right:auto;
-  line-height:1.5;
-}
-.video-upload-hint code{
-  background:rgba(201,145,46,0.15);
-  border:1px solid var(--line);
-  padding:0.1em 0.4em;border-radius:3px;
-  font-size:0.75rem;color:var(--gold-light);
+.yt-iframe{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  border:0;
 }
 
 /* ── QUOTE BAND ─────────────────────────────────── */
@@ -751,6 +782,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 </style>
 </head>
 <body>
+
+<!-- WELCOME SPLASH -->
+<div id="welcome-splash">
+  <div class="splash-logo">Bon Bon <em>Terrace</em></div>
+  <div class="splash-line"></div>
+  <div class="splash-sub">Welcome to the official page of Bon Bon Terrace Restaurant</div>
+</div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -1258,27 +1296,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <span class="eyebrow" style="color:var(--gold-light);">Experience</span>
     <h2 class="section-title" style="color:var(--cream);font-size:clamp(2rem,4vw,3rem);">Experience Bon Bon Terrace</h2>
     <p style="color:var(--cream-dim);margin-top:1rem;margin-bottom:2.5rem;">From morning light on the terrace to candlelit evenings — step inside before you arrive.</p>
-
-    <!-- In-page video player -->
-    <div class="inpage-video-wrap">
-      <video id="mainVideo" class="inpage-video" controls poster="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHHuNu633oELNfIKPwJBpZQqZsny4Y84FWHXFajcZcLHaRv30EgQ8U02xAjhtHUBTAyf5KNcBAeNOlM-eN0jP-8yAXfqSKfl89kHdjHfC4IA6pacM9hPkGv-PBVchCvastdZwWY9jzxZlFS=s1360-w1360-h1020-rw" preload="none">
-        <!-- Replace the src below with your actual video file URL -->
-        <source src="" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <!-- Custom play overlay shown when no source / before first play -->
-      <div class="video-play-overlay" id="videoOverlay" onclick="playVideo()">
-        <div class="video-play-circle">
-          <svg width="28" height="32" viewBox="0 0 28 32" fill="none"><path d="M2 2L26 16L2 30V2Z" fill="currentColor"/></svg>
-        </div>
-        <p class="video-overlay-text">Watch the Walkthrough</p>
-      </div>
-    </div>
-
-    <!-- Upload hint (replace when you have your video) -->
-    <div class="video-upload-hint">
-      <span>📹</span>
-      <span>Replace the video source with your own walkthrough footage — just swap the <code>&lt;source src=""&gt;</code> URL.</span>
+    <div class="yt-wrap">
+      <iframe
+        class="yt-iframe"
+        src="https://www.youtube-nocookie.com/embed/WPRm04AegtE?autoplay=1&mute=1&loop=1&playlist=WPRm04AegtE&rel=0&modestbranding=1&controls=1&color=white"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        title="Bon Bon Terrace Walkthrough"
+      ></iframe>
     </div>
   </div>
 </div>
@@ -1291,42 +1316,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 
 <!-- TEAM -->
 <div class="team-bg" id="team">
-  <div class="team-inner">
+  <div class="team-inner" style="text-align:center;padding-bottom:5rem;">
     <span class="eyebrow reveal" data-i18n="team_eyebrow">Meet the Team</span>
     <h2 class="section-title reveal" data-i18n="team_title">The People Behind the Terrace</h2>
-    <p class="section-sub reveal" data-i18n="team_sub">A small, dedicated team that treats every guest like family.</p>
-    <div class="team-grid">
-      <div class="team-card reveal reveal-delay-1">
-        <div class="team-photo" style="display:flex;align-items:center;justify-content:center;">
-          <span style="font-size:3.5rem;opacity:0.4;">👤</span>
-        </div>
-        <div class="team-info">
-          <div class="team-role" data-i18n="team1_role">Guest Relations</div>
-          <div class="team-name" data-i18n="team1_name">Hostess</div>
-          <p class="team-bio">The warm first face you see at Bon Bon Terrace. She ensures every table is perfectly set and every guest feels genuinely welcomed from the first step in.</p>
-        </div>
-      </div>
-      <div class="team-card reveal reveal-delay-2">
-        <div class="team-photo" style="display:flex;align-items:center;justify-content:center;">
-          <span style="font-size:3.5rem;opacity:0.4;">👨‍🍳</span>
-        </div>
-        <div class="team-info">
-          <div class="team-role" data-i18n="team2_role">Head of Kitchen</div>
-          <div class="team-name" data-i18n="team2_name">Head Chef</div>
-          <p class="team-bio">The creative force behind every dish on our menu. His philosophy: honest ingredients, honest flavors. No shortcuts, no compromises — just beautiful food.</p>
-        </div>
-      </div>
-      <div class="team-card reveal reveal-delay-3">
-        <div class="team-photo" style="display:flex;align-items:center;justify-content:center;">
-          <span style="font-size:3.5rem;opacity:0.4;">🤝</span>
-        </div>
-        <div class="team-info">
-          <div class="team-role" data-i18n="team3_role">Front of House</div>
-          <div class="team-name" data-i18n="team3_name">Service Team</div>
-          <p class="team-bio">Attentive, unhurried, and always with a smile. Our service team knows the menu inside out and loves sharing recommendations with guests who want to explore.</p>
-        </div>
-      </div>
-    </div>
+    <p class="section-sub reveal" style="margin:0 auto;" data-i18n="team_sub">A small, dedicated team that treats every guest like family.</p>
   </div>
 </div>
 
@@ -1341,13 +1334,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
         <div class="info-glass reveal">
           <h3>🕐 <span data-i18n="hours_title">Opening Hours</span></h3>
           <ul>
-            <li><span data-i18n="mon">Monday</span><span>10:00 – 22:00</span></li>
-            <li><span data-i18n="tue">Tuesday</span><span>10:00 – 22:00</span></li>
-            <li><span data-i18n="wed">Wednesday</span><span>10:00 – 22:00</span></li>
-            <li><span data-i18n="thu">Thursday</span><span>10:00 – 22:00</span></li>
-            <li><span data-i18n="fri">Friday</span><span>10:00 – 22:00</span></li>
-            <li><span data-i18n="sat">Saturday</span><span>10:00 – 22:00</span></li>
-            <li><span data-i18n="sun">Sunday</span><span>10:00 – 22:00</span></li>
+            <li><span data-i18n="mon">Monday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="tue">Tuesday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="wed">Wednesday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="thu">Thursday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="fri">Friday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="sat">Saturday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="sun">Sunday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
           </ul>
         </div>
         <div class="info-glass reveal reveal-delay-1">
@@ -1358,7 +1351,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
             <li><span>WhatsApp</span><span><a href="https://wa.me/998941781112" style="color:var(--gold-light);">Message Us</a></span></li>
           </ul>
           <div class="social-row" style="margin-top:1.5rem;">
-            <a href="#" class="social-btn">📸 Instagram</a>
+            <a href="https://www.instagram.com/bonbonterrace.uz/" target="_blank" rel="noopener" class="social-btn">📸 Instagram</a>
             <a href="#" class="social-btn">💬 Telegram</a>
           </div>
         </div>
@@ -1460,7 +1453,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
         <ul>
           <li><a href="tel:+998972960057">+998 97 296 00 57</a></li>
           <li><a href="https://wa.me/998941781112">WhatsApp</a></li>
-          <li><a href="#" style="color:var(--cream-dim)">Instagram</a></li>
+          <li><a href="https://www.instagram.com/bonbonterrace.uz/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="#" style="color:var(--cream-dim)">Telegram</a></li>
         </ul>
       </div>
@@ -1827,27 +1820,11 @@ function submitBooking() {
   msgEl.className = 'book-msg success'; msgEl.textContent = d.book_success; msgEl.style.display='block';
 }
 
-// ── IN-PAGE VIDEO ─────────────────────
-function playVideo() {
-  const video = document.getElementById('mainVideo');
-  const overlay = document.getElementById('videoOverlay');
-  // If no src set, show a friendly message
-  if (!video.currentSrc && !video.src) {
-    overlay.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--cream-dim)"><div style="font-size:2rem;margin-bottom:1rem">📹</div><p style="font-size:0.9rem;line-height:1.6">Add your video URL to the <code style=\'background:rgba(201,145,46,0.15);padding:2px 6px;border-radius:3px;color:var(--gold-light);\'>&lt;source src=""&gt;</code><br>tag in the HTML to enable playback.</p></div>';
-    return;
-  }
-  overlay.classList.add('hidden');
-  video.play();
+// ── YOUTUBE LAZY LOAD ─────────────────────────────
+function loadYT() {
+  const wrap = document.getElementById('ytWrap');
+  wrap.innerHTML = '<iframe class="yt-iframe" src="https://www.youtube-nocookie.com/embed/WPRm04AegtE?autoplay=1&rel=0&modestbranding=1&color=white" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
 }
-// Hide overlay once video starts playing natively
-document.getElementById('mainVideo').addEventListener('play', () => {
-  document.getElementById('videoOverlay').classList.add('hidden');
-});
-document.getElementById('mainVideo').addEventListener('pause', () => {
-  if (document.getElementById('mainVideo').ended || document.getElementById('mainVideo').currentTime === 0) {
-    document.getElementById('videoOverlay').classList.remove('hidden');
-  }
-});
 
 // Init
 buildGallery();
