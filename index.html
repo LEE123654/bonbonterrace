@@ -48,37 +48,30 @@ button{font-family:var(--f-body);cursor:pointer;}
 ::-webkit-scrollbar-track{background:#3A2C1C;}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
 
-/* ── WELCOME SPLASH ─────────────────────────────────── */
+/* ── WELCOME SPLASH ──────────────────────────────────── */
 #welcome-splash{
   position:fixed;inset:0;z-index:9999;
-  background:var(--obsidian-2);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
-  animation:splashFade 0.6s ease-out 2.4s forwards;
+  background:var(--obsidian);
+  display:flex;align-items:center;justify-content:center;
   pointer-events:none;
+  animation:splashContainer 2.2s ease-in-out forwards;
 }
-#welcome-splash .splash-logo{
-  font-family:var(--f-display);font-size:clamp(1.5rem,4vw,2.6rem);
-  font-weight:300;letter-spacing:0.06em;color:var(--cream);
-  opacity:0;animation:splashIn 0.8s ease-out 0.2s forwards;
+@keyframes splashContainer{
+  0%{opacity:1;}90%{opacity:1;}100%{opacity:0;visibility:hidden;}
 }
-#welcome-splash .splash-logo em{color:var(--gold);font-style:normal;}
-#welcome-splash .splash-line{
-  width:60px;height:1px;background:var(--gold);
-  opacity:0;animation:splashIn 0.8s ease-out 0.5s forwards;
+#welcome-splash .splash-inner{
+  font-family:var(--f-display);
+  font-size:clamp(1.2rem,3vw,2rem);
+  font-weight:300;letter-spacing:0.06em;
+  text-align:center;color:var(--cream);line-height:1.55;
+  animation:splashText 2.2s ease-in-out forwards;
 }
-#welcome-splash .splash-sub{
-  font-size:clamp(0.7rem,2vw,0.85rem);letter-spacing:0.22em;text-transform:uppercase;
-  color:var(--cream-dim);font-weight:400;
-  opacity:0;animation:splashIn 0.8s ease-out 0.7s forwards;
-  text-align:center;padding:0 1rem;
-}
-@keyframes splashIn{
-  from{opacity:0;transform:translateY(10px);}
-  to{opacity:1;transform:translateY(0);}
-}
-@keyframes splashFade{
-  from{opacity:1;pointer-events:auto;}
-  to{opacity:0;pointer-events:none;}
+#welcome-splash .splash-inner em{color:var(--gold);font-style:italic;}
+@keyframes splashText{
+  0%{opacity:0;transform:translateY(10px);}
+  15%{opacity:1;transform:translateY(0);}
+  80%{opacity:1;transform:translateY(0);}
+  100%{opacity:0;transform:translateY(-8px);}
 }
 
 /* ── TOPBAR ─────────────────────────────────────────── */
@@ -785,15 +778,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 
 <!-- WELCOME SPLASH -->
 <div id="welcome-splash">
-  <div class="splash-logo">Bon Bon <em>Terrace</em></div>
-  <div class="splash-line"></div>
-  <div class="splash-sub">Welcome to the official page of Bon Bon Terrace Restaurant</div>
+  <div class="splash-inner">Welcome to the official page of<br><em>Bon Bon Terrace</em> Restaurant</div>
 </div>
 
 <!-- TOPBAR -->
 <div class="topbar">
   <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:center;">
-    <span data-i18n="tb_hours">Open daily · 10:00 AM – 10:00 PM</span>
+    <span data-i18n="tb_hours">Open daily · 10:00 AM – until the last guest</span>
     <span class="topbar-divider">|</span>
     <span data-i18n="tb_address">Gavkushon St., Bukhara, Uzbekistan</span>
   </div>
@@ -807,7 +798,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <li><a href="#story" data-i18n="nav_story">Our Story</a></li>
     <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
     <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#team" data-i18n="nav_team">Team</a></li>
     <li><a href="#location" data-i18n="nav_location">Location</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0.5rem;">
@@ -830,7 +820,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <a href="#story" onclick="closeMobile()">Our Story</a>
   <a href="#menu" onclick="closeMobile()">Menu</a>
   <a href="#gallery" onclick="closeMobile()">Gallery</a>
-  <a href="#team" onclick="closeMobile()">Team</a>
   <a href="#location" onclick="closeMobile()">Location</a>
   <a href="#booking" onclick="closeMobile()" style="color:var(--gold);">Book a Table</a>
 </div>
@@ -1296,15 +1285,23 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <span class="eyebrow" style="color:var(--gold-light);">Experience</span>
     <h2 class="section-title" style="color:var(--cream);font-size:clamp(2rem,4vw,3rem);">Experience Bon Bon Terrace</h2>
     <p style="color:var(--cream-dim);margin-top:1rem;margin-bottom:2.5rem;">From morning light on the terrace to candlelit evenings — step inside before you arrive.</p>
-    <div class="yt-wrap">
-      <iframe
-        class="yt-iframe"
-        src="https://www.youtube-nocookie.com/embed/WPRm04AegtE?autoplay=1&mute=1&loop=1&playlist=WPRm04AegtE&rel=0&modestbranding=1&controls=1&color=white"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-        title="Bon Bon Terrace Walkthrough"
-      ></iframe>
+
+    <!-- Autoplay video — replace src with your actual video file URL when ready -->
+    <div style="max-width:860px;margin:2.5rem auto 0;border-radius:4px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,0.5);">
+      <video
+        id="mainVideo"
+        style="width:100%;display:block;aspect-ratio:16/9;background:#1a1208;"
+        autoplay
+        muted
+        loop
+        playsinline
+        controls
+        poster="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHHuNu633oELNfIKPwJBpZQqZsny4Y84FWHXFajcZcLHaRv30EgQ8U02xAjhtHUBTAyf5KNcBAeNOlM-eN0jP-8yAXfqSKfl89kHdjHfC4IA6pacM9hPkGv-PBVchCvastdZwWY9jzxZlFS=s1360-w1360-h1020-rw"
+      >
+        <source src="restaurant-walkthrough.mp4" type="video/mp4">
+      </video>
     </div>
+
   </div>
 </div>
 
@@ -1312,15 +1309,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <div class="quote-band">
   <blockquote class="quote-text" data-i18n="quote">«Incredibly delicious food and a pleasant atmosphere, friendly service staff — everything at the highest level. We come often.»</blockquote>
   <p class="quote-attribution">— A valued guest · Bon Bon Terrace, Bukhara</p>
-</div>
-
-<!-- TEAM -->
-<div class="team-bg" id="team">
-  <div class="team-inner" style="text-align:center;padding-bottom:5rem;">
-    <span class="eyebrow reveal" data-i18n="team_eyebrow">Meet the Team</span>
-    <h2 class="section-title reveal" data-i18n="team_title">The People Behind the Terrace</h2>
-    <p class="section-sub reveal" style="margin:0 auto;" data-i18n="team_sub">A small, dedicated team that treats every guest like family.</p>
-  </div>
 </div>
 
 <!-- LOCATION -->
@@ -1334,13 +1322,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
         <div class="info-glass reveal">
           <h3>🕐 <span data-i18n="hours_title">Opening Hours</span></h3>
           <ul>
-            <li><span data-i18n="mon">Monday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
-            <li><span data-i18n="tue">Tuesday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
-            <li><span data-i18n="wed">Wednesday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
-            <li><span data-i18n="thu">Thursday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
-            <li><span data-i18n="fri">Friday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
-            <li><span data-i18n="sat">Saturday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
-            <li><span data-i18n="sun">Sunday</span><span data-i18n="hours_val">10:00 – till the last guest</span></li>
+            <li><span data-i18n="mon">Monday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
+            <li><span data-i18n="tue">Tuesday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
+            <li><span data-i18n="wed">Wednesday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
+            <li><span data-i18n="thu">Thursday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
+            <li><span data-i18n="fri">Friday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
+            <li><span data-i18n="sat">Saturday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
+            <li><span data-i18n="sun">Sunday</span><span data-i18n="hours_val">10:00 – until the last guest</span></li>
           </ul>
         </div>
         <div class="info-glass reveal reveal-delay-1">
@@ -1469,7 +1457,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 // ── i18n ─────────────────────────────────────────
 const i18n = {
   en:{
-    tb_hours:"Open daily 10:00 AM – 10:00 PM", tb_address:"Gavkushon St., Bukhara, Uzbekistan",
+    tb_hours:"Open daily · 10:00 AM – until the last guest", tb_address:"Gavkushon St., Bukhara, Uzbekistan",
     nav_story:"Our Story", nav_menu:"Menu", nav_team:"Team", nav_location:"Location", nav_booking:"Book a Table",
     eyebrow:"Restaurant · Terrace · Old City Bukhara",
     hero_title:"A terrace table,<br><em>a pot of pomegranate tea.</em>",
@@ -1490,13 +1478,13 @@ const i18n = {
     team_eyebrow:"Meet the Team", team_title:"The People Behind the Terrace", team_sub:"A small, dedicated team that treats every guest like family.",
     team1_name:"Hostess", team1_role:"Guest Relations", team2_name:"Head Chef", team2_role:"Head of Kitchen", team3_name:"Service Team", team3_role:"Front of House",
     loc_eyebrow:"Visit Us", loc_title:"Hours & Location", loc_sub:"Open every day — walk-ins welcome, though we recommend booking for groups.",
-    hours_title:"Opening Hours", contact_title:"Contact",
+    hours_title:"Opening Hours", hours_val:"10:00 – until the last guest", contact_title:"Contact",
     mon:"Monday", tue:"Tuesday", wed:"Wednesday", thu:"Thursday", fri:"Friday", sat:"Saturday", sun:"Sunday",
     address_label:"Address", address_val:"Gavkushon St., Bukhara, Uzbekistan", phone_label:"Phone",
     book_eyebrow:"Reserve Online", book_title:"Book a Table", book_sub:"Reserve your spot on the terrace — we'll confirm by phone or WhatsApp.",
     book_name:"Your Name", book_phone:"Phone Number", book_date:"Date", book_time:"Time", book_guests:"Guests", book_notes:"Special Requests (optional)", book_submit:"Request Reservation",
     book_error:"Please fill in all required fields.", book_success:"✓ Your request has been sent! We will confirm shortly.",
-    footer_text:"Gavkushon St., Bukhara · +998 97 296 00 57 · Open daily, 10:00–22:00",
+    footer_text:"Gavkushon St., Bukhara · +998 97 296 00 57 · Open daily, 10:00 – until the last guest",
     d_menemen:"Menemen with Cream Cheese", d_menemen_ing:"Eggs, onion, tomatoes, bell pepper, cheese",
     d_syrniki:"Syrniki with Coconut Sauce", d_syrniki_ing:"Cottage cheese, coconut sauce, berries or fruit",
     d_benedict:"Eggs Benedict with Avocado & Salmon", d_benedict_ing:"Bun, poached eggs, lightly salted salmon, avocado, arugula",
@@ -1581,7 +1569,7 @@ const i18n = {
     d_kiwi_mint:"Kiwi-Mint", d_cucumber_celery:"Cucumber-Celery", d_citrus_detox:"Citrus", d_cucumber_water:"Cucumber Water"
   },
   uz:{
-    tb_hours:"Har kuni 10:00 – 22:00", tb_address:"Gavkushon ko'chasi, Buxoro, O'zbekiston",
+    tb_hours:"Har kuni 10:00 – oxirgi mehmon ketguncha", tb_address:"Gavkushon ko'chasi, Buxoro, O'zbekiston",
     nav_story:"Bizning hikoya", nav_menu:"Menyu", nav_team:"Jamoa", nav_location:"Joylashuv", nav_booking:"Stol band qilish",
     eyebrow:"Restaurant · Terrace · Eski shahar Buxoro",
     hero_sub:"Buxoro eski shahrida nonushta, tushlik va kechki ovqat uchun qulay joy.",
@@ -1601,16 +1589,101 @@ const i18n = {
     team_eyebrow:"Jamoa bilan tanishing", team_title:"Terrasa ortidagi odamlar", team_sub:"Har bir mehmonni oiladek kutib oladigan kichik va fidokor jamoa.",
     team1_name:"Mehmondor", team1_role:"Mehmonlar bilan ishlash", team2_name:"Bosh oshpaz", team2_role:"Oshxona boshlig'i", team3_name:"Xizmat ko'rsatish jamoasi", team3_role:"Zal",
     loc_eyebrow:"Bizga tashrif buyuring", loc_title:"Ish vaqti va joylashuv", loc_sub:"Har kuni ochiq — oldindan band qilmasdan ham kelishingiz mumkin, lekin katta guruhlar uchun tavsiya etiladi.",
-    hours_title:"Ish vaqti", contact_title:"Aloqa",
+    hours_title:"Ish vaqti", hours_val:"10:00 – oxirgi mehmon ketguncha", contact_title:"Aloqa",
     mon:"Dushanba", tue:"Seshanba", wed:"Chorshanba", thu:"Payshanba", fri:"Juma", sat:"Shanba", sun:"Yakshanba",
     address_label:"Manzil", address_val:"Gavkushon ko'chasi, Buxoro, O'zbekiston", phone_label:"Telefon",
     book_eyebrow:"Online band qilish", book_title:"Stol band qilish", book_sub:"Terrasadagi o'yingizni band qiling — biz telefon yoki WhatsApp orqali tasdiqlaymiz.",
     book_name:"Ismingiz", book_phone:"Telefon raqami", book_date:"Sana", book_time:"Vaqt", book_guests:"Mehmonlar soni", book_notes:"Maxsus so'rovlar (ixtiyoriy)", book_submit:"Band qilishni so'rash",
     book_error:"Iltimos, barcha majburiy maydonlarni to'ldiring.", book_success:"✓ So'rovingiz yuborildi! Tez orada tasdiqlaymiz.",
-    footer_text:"Gavkushon ko'chasi, Buxoro · +998 97 296 00 57 · Har kuni, 10:00–22:00"
+    footer_text:"Gavkushon ko'chasi, Buxoro · +998 97 296 00 57 · Har kuni, 10:00 – oxirgi mehmon",
+    d_menemen:"Qaymoqli pishloqli menemen", d_menemen_ing:"Tuxum, piyoz, pomidor, qalampir, pishloq",
+    d_syrniki:"Kokos sosli syrniki", d_syrniki_ing:"Tvorog, kokos sosi, mevalar yoki rezavorlar",
+    d_benedict:"Avokado va losos bilan tuxum Benedict", d_benedict_ing:"Bulochka, qaynatilgan tuxum, engil sho'rlangan losos, avokado, arugula",
+    d_omelette:"Qo'ziqorinli kremli omlet", d_omelette_ing:"Tuxum, sariyog', qo'ziqorin, baget, ko'katlar",
+    d_continental:"Kontinental nonushta", d_continental_ing:"Qovurilgan tuxum, kolbasa, loviya, gilos pomidor, aralash salat",
+    d_eggplant_burrata:"Burratali qizdirilgan baqlajon salati", d_eggplant_burrata_ing:"Qovurilgan baqlajon, gilos pomidor, kremli burrata, unagi sosi",
+    d_beef_warm:"Issiq mol go'shti va arugula salati", d_beef_warm_ing:"Nozik mol go'shti, qovurilgan qo'ziqorin, qalampir, arugula",
+    d_achichuk:"Achichuk salati", d_achichuk_ing:"Pishgan pomidor va qizil piyozdan, chili va rayhon bilan",
+    d_caesar:"Tovuqli Sezar salati", d_caesar_ing:"Grilda pishirilgan tovuq filesi, ko'katlar, parmezan, qovurilgan kulcha",
+    d_mary:"Meri salati", d_mary_ing:"Qovurilgan tovuq bo'laklari, yangi sabzavotlar va kremli mozzarella",
+    d_greek:"Yunoniston salati", d_greek_ing:"Yangi sabzavotlar, feta pishloq, zaytun, zaytun moyi va oregano sousi",
+    d_chuponcha:"Chuponcha salati", d_chuponcha_ing:"Pomidor va bodring, an'anaviy suzma va rayhon sousi bilan",
+    d_tuna:"Tuna va yangi arugula salati", d_tuna_ing:"Tuna filesi, turp, bedana tuxumi, limon-asal sousi",
+    d_pomidoro:"Pomidorro salati", d_pomidoro_ing:"Aralash pomidorlar maxfiy sos, kapers va limon bilan",
+    d_bolognese_pasta:"Bolonez pasta", d_bolognese_pasta_ing:"Klassik pasta qiyma go'sht va qirralgan parmezan bilan",
+    d_fettuccine_chicken:"Tovuqli fettuchini", d_fettuccine_chicken_ing:"Nozik tovuq filesi bo'laklari bilan kremli pasta",
+    d_rigatoni_stracciatella:"Stracchiatella bilan rigatoni", d_rigatoni_stracciatella_ing:"Tomat sosli pasta, kremli stracciatella pishloq va pesto sousi bilan",
+    d_risoni_chicken:"Tovuqli risoni", d_risoni_chicken_ing:"Guruch shaklidagi kichik pasta, tovuq filesi va parmezan bilan",
+    d_bolognese_pizza:"Bolonez pitsa", d_bolognese_pizza_ing:"Qiyma go'sht, tomat sosi va parmezan bilan",
+    d_four_cheese:"To'rt pishloqli pitsa", d_four_cheese_ing:"To'rt xil pishloqning kombinatsiyasi nozik kremli asosda",
+    d_chicken_mushroom:"Tovuq va qo'ziqorinli pitsa", d_chicken_mushroom_ing:"Nozik tovuq filesi, qo'ziqorin va cho'ziluvchi mozzarella",
+    d_pepperoni:"Pepperoni pitsa", d_pepperoni_ing:"Achchiq pepperoni kolbasa, ko'p mozzarella",
+    d_beef_burger_v3:"Mol go'shtli burger", d_beef_burger_v3_ing:"Yumshoq bulochkada pishloqli mol go'shti kotleti",
+    d_chicken_burger_v3:"Tovuqli burger", d_chicken_burger_v3_ing:"Qovurilgan tovuq filesi, asberg salati va firma sousi bilan",
+    d_steak_burger:"Steyk burger", d_steak_burger_ing:"Bon file mol go'shti, yumshoq bulochkada maxfiy sos bilan",
+    d_baguette_cheese:"Pishloqli baget", d_baguette_cheese_ing:"Pishloq qobig'i ostida pishirilgan qarsildoq baget",
+    d_garlic_toasts:"Sarimsoqli tostlar", d_garlic_toasts_ing:"Sarimsoq hidli javdar non qovurilmasi",
+    d_fried_dumplings:"Qovurilgan chuchvara", d_fried_dumplings_ing:"Go'shtli to'ldiruvchili oltin mini chuchvara",
+    d_bichak:"Qovoqli / ko'katli bichak", d_bichak_ing:"Sharbatli to'ldiruvchili an'anaviy qovurilgan pirog",
+    d_tiger_shrimp:"Zarg'aldoq sosida yo'lbars qisqichbaqa", d_tiger_shrimp_ing:"Nozik achchiq sosda yirik qisqichbaqa",
+    d_spring_rolls:"Bahor ruletlari", d_spring_rolls_ing:"Sabzavotli to'ldiruvchili qarsildoq ruletlar",
+    d_quesadilla:"Kesadilla", d_quesadilla_ing:"Pishloq, tovuq va achchiq sabzavotli tortilla",
+    d_salmon_bruschetta:"Losos bilan brusketta", d_salmon_bruschetta_ing:"Nozik qaymoqli pishloq va losos bo'laklari bilan tost",
+    d_cheese_sticks:"Qarsildoq pishloq tayoqlari", d_cheese_sticks_ing:"Cho'ziluvchi to'ldiruvchili qovurilgan pishloq",
+    d_medallion:"Kremli qo'ziqorin sosida medalyon", d_medallion_ing:"Qo'ziqorin va qaymoqda nozik mol go'shti filtsi",
+    d_chicken_on_bed:"Sabzavot to'shamida tovuq", d_chicken_on_bed_ing:"Oltin qobiqqa qovurilgan yarim tovuq",
+    d_crispy_wings:"Qarsildoq qanotlar", d_crispy_wings_ing:"Firma sosida mukammal qovurilgan qanotlar",
+    d_orange_ribs:"Apelsin sosida mol go'shtli qovurg'alar", d_orange_ribs_ing:"Apelsin sharbati, asal va soya sousi bilan glazirlangan qovurg'alar",
+    d_ribeye:"Ribeye steyk (100g)", d_ribeye_ing:"Marmar mol go'shtidan klassik sharbatli steyk",
+    d_tbone:"T-Bone steyk (100g)", d_tbone_ing:"Ikki xil nozik file go'shtini birlashtiruvchi suyakli steyk",
+    d_chicken_steak:"Tovuq steygi", d_chicken_steak_ing:"Grilda pishirilgan tovuq filesi, qovurilgan sabzavotlar bilan",
+    d_bonfilet_mushroom:"Qo'ziqorinli Bon File steygi", d_bonfilet_mushroom_ing:"Qalin kremli qo'ziqorin sosida eng nozik mol go'shti filtsi",
+    d_ilik:"Grilda pishirilgan ilik", d_ilik_ing:"Sarimsoq, maydanoz va chili bilan marinadlangan ilik",
+    d_sausages_mash:"Grilda pishirilgan kolbasa kartoshka püreesi bilan", d_sausages_mash_ing:"Silliq kartoshka püreesi bilan ishtahabaxsh kolbasalar",
+    d_potato_cream_soup:"Kartoshkali krem-sho'rva", d_potato_cream_soup_ing:"Kartoshka, go'shtli to'ldiruvchi va nozik qaymoqli sho'rva",
+    d_burrata_fruit_salad:"Mevali \"Kremli Burrata\" salati", d_burrata_fruit_salad_ing:"Kremli pishloq, sharbatli qulupnay, avokado va ezilgan pista bilan",
+    d_golden_trout:"Oltin forel", d_golden_trout_ing:"Oltin rangga qovurilgan forel, firma sousi bilan",
+    d_lamb_shank:"Sharqona uslubda qo'zichoq baldiri", d_lamb_shank_ing:"Demi-glas sousi va basmati guruch bilan sekin pishirilgan qo'zichoq baldiri",
+    d_beef_tenderloin_grill:"Grilda pishirilgan mol go'shti filtsi", d_beef_tenderloin_grill_ing:"Tomat sosida basmati guruch bilan filé",
+    d_bun:"Bulochka", d_kulcha:"Kulcha", d_borodinsky:"Borodinsky noni", d_bread_assorted:"Assorted non",
+    d_chuchvara_spinach:"Ismaloqli chuchvara", d_chuchvara_spinach_ing:"Yangi ismaloq va ko'katlar bilan sharbatli to'ldiruvchili chuchvara",
+    d_chuchvara_meat:"Go'shtli chuchvara", d_chuchvara_meat_ing:"Mayda go'sht va xushbo'y ziravorlar bilan chuchvara",
+    d_kayish_suzma:"Suzmali qayish", d_kayish_suzma_ing:"Nordon suzma sousi bilan uy xamiri",
+    d_kayish_podlivka:"Qaymoqli sosli qayish", d_kayish_podlivka_ing:"Boy, mazali sabzavot sousi bilan qaynatilgan uy xamiri",
+    d_kavurma_lagman:"Qovurma lagman", d_kavurma_lagman_ing:"Tomat sosida mol go'shti bilan qovurilgan uy lag'mon",
+    d_dolma:"Sosli dolma", d_dolma_ing:"Yosh uzum bargida go'sht, firma sousi bilan",
+    d_kadu_barak:"Qovoqli barak", d_kadu_barak_ing:"Shirin qovoq va ziravorlar bilan nozik chuchvara",
+    d_mushroom_cream:"Qo'ziqorinli krem-sho'rva", d_mushroom_cream_ing:"Nozik qaymoq bilan qo'ziqorindan tayyorlangan sho'rva",
+    d_lentil_cream:"Yasmiqli krem-sho'rva", d_lentil_cream_ing:"Limon bilan servis qilinadigan an'anaviy qizil yasmiq sho'rvasi",
+    d_beef_shurpa:"Mol go'shtli sho'rva", d_beef_shurpa_ing:"Yirik mol go'shti va sabzavotli boy bulyon",
+    d_mastava:"Mastava sho'rvasi", d_mastava_ing:"Mol go'shti, guruch va xushbo'y ziravorlar bilan to'q Sharq sho'rvasi",
+    d_chicken_soup:"Tovuq sho'rvasi", d_chicken_soup_ing:"Nozik tovuq filesi va ingichka makaron bilan yengil uy bulyoni",
+    d_okroshka:"Okroshka", d_okroshka_ing:"Yangi sabzavotlar, ko'katlar va suzma bilan yangilovchi aralashma",
+    d_village_potato:"Qishloq uslubida kartoshka", d_grilled_corn:"Grilda pishirilgan makkajo'xori", d_fries:"Qovurilgan kartoshka",
+    d_grilled_veg:"Grilda pishirilgan sabzavotlar", d_grilled_mushrooms:"Grilda pishirilgan qo'ziqorin", d_rice_veg:"Sabzavotli guruch", d_mashed_potato:"Kartoshka püresi",
+    d_espresso:"Espresso / Double", d_americano:"Americano / Double", d_cappuccino:"Kapuchino / Double",
+    d_latte:"Latte", d_frappuccino:"Frappuccino", d_raf:"Raf qahva", d_iced_americano:"Muzli americano",
+    d_flat_white:"Flat White", d_cocoa:"Kakao", d_hot_chocolate:"Issiq shokolad", d_turkish_coffee:"Turk qahvasi", d_affogato:"Affogato — qahvali desert",
+    d_strawberry_shake:"Qulupnay", d_banana_shake:"Banan", d_milk_shake:"Sut", d_chocolate_shake:"Shokolad", d_oreo_shake:"Oreo",
+    d_raspberry_banana:"Malina-banan", d_berry_smoothie:"Aralash mevalar", d_pelican:"Pelikan",
+    d_bonbon_cocktail:"Bon Bon", d_orange_cocktail:"Apelsin", d_strawberry_paradise:"Qulupnay paradisi",
+    d_nectarine:"Shaftoli", d_mojito_classic:"Klassik Mojito", d_sencha_romance:"Sencha romantikasi",
+    d_berry_delight:"Meva lazzati", d_orange_passion:"Apelsin passiflorasi",
+    d_berry_symphony:"Meva simfoniyasi", d_ginger_storm:"Zanjabil bo'roni",
+    d_assam_lemon:"Assam / limon bilan", d_sencha_lemon:"Sencha / limon bilan", d_bardak:"Bardak choy",
+    d_hibiscus:"Gibiskus choy", d_pomegranate_tea:"Anor choy", d_raspberry_tea:"Malina choy",
+    d_ginger_tea:"Zanjabil choy", d_masala_tea:"Masala choy", d_moroccan_tea:"Marokash choy",
+    d_fruit_tea:"Mevali choy", d_le_bonnet:"Le Bonnet", d_herbal_tea_v3:"O'tli choy",
+    d_citrus_tea:"Sitrus choy", d_cherry_mulled:"Gilosli mulled choy",
+    d_orange_berry:"Apelsin-meva", d_winter_immunity:"Qishki immunitet",
+    d_fruit_ice:"Mevali muzli choy", d_classic_ice:"Klassik muzli choy", d_blue_lagoon:"Ko'k lagun",
+    d_classic_lemonade:"Klassik limonad", d_berry_lemonade:"Mevali limonad",
+    d_orange_lemonade:"Apelsinli limonad", d_tarragon_lemonade:"Tarxunli limonad",
+    d_orange_apple_fresh:"Apelsin / olma", d_apple_fresh:"Olma", d_carrot_apple_fresh:"Sabzi / olma",
+    d_kiwi_mint:"Kivi-yalpiz", d_cucumber_celery:"Bodring-selereya", d_citrus_detox:"Sitrus", d_cucumber_water:"Bodring suvi"
   },
   ru:{
-    tb_hours:"Открыто ежедневно 10:00 – 22:00", tb_address:"ул. Гавкушон, Бухара, Узбекистан",
+    tb_hours:"Открыто ежедневно · 10:00 – до последнего гостя", tb_address:"ул. Гавкушон, Бухара, Узбекистан",
     nav_story:"О нас", nav_menu:"Меню", nav_team:"Команда", nav_location:"Адрес", nav_booking:"Забронировать стол",
     eyebrow:"Ресторан · Терраса · Старый город Бухара",
     hero_sub:"Уютное место для завтрака, обеда и ужина в старом городе Бухары.",
@@ -1630,16 +1703,101 @@ const i18n = {
     team_eyebrow:"Знакомьтесь с командой", team_title:"Люди за террасой", team_sub:"Небольшая и преданная команда, которая принимает каждого гостя как родного.",
     team1_name:"Хозяйка зала", team1_role:"Работа с гостями", team2_name:"Шеф-повар", team2_role:"Руководитель кухни", team3_name:"Команда обслуживания", team3_role:"Зал",
     loc_eyebrow:"Приходите к нам", loc_title:"Часы работы и расположение", loc_sub:"Открыто ежедневно — бронирование не обязательно, но для групп рекомендуется.",
-    hours_title:"Часы работы", contact_title:"Контакты",
+    hours_title:"Часы работы", hours_val:"10:00 – до последнего гостя", contact_title:"Контакты",
     mon:"Понедельник", tue:"Вторник", wed:"Среда", thu:"Четверг", fri:"Пятница", sat:"Суббота", sun:"Воскресенье",
     address_label:"Адрес", address_val:"ул. Гавкушон, Бухара, Узбекистан", phone_label:"Телефон",
     book_eyebrow:"Онлайн-бронирование", book_title:"Забронировать стол", book_sub:"Забронируйте место на террасе — подтвердим по телефону или WhatsApp.",
     book_name:"Ваше имя", book_phone:"Номер телефона", book_date:"Дата", book_time:"Время", book_guests:"Количество гостей", book_notes:"Особые пожелания (необязательно)", book_submit:"Отправить заявку",
     book_error:"Пожалуйста, заполните все обязательные поля.", book_success:"✓ Ваш запрос отправлен! Скоро подтвердим.",
-    footer_text:"ул. Гавкушон, Бухара · +998 97 296 00 57 · Ежедневно, 10:00–22:00"
+    footer_text:"ул. Гавкушон, Бухара · +998 97 296 00 57 · Ежедневно, 10:00 – до последнего гостя",
+    d_menemen:"Менемен со сливочным сыром", d_menemen_ing:"Яйца, лук, помидоры, болгарский перец, сыр",
+    d_syrniki:"Сырники с кокосовым соусом", d_syrniki_ing:"Творог, кокосовый соус, ягоды или фрукты",
+    d_benedict:"Яйца Бенедикт с авокадо и лососем", d_benedict_ing:"Булочка, яйца пашот, слабосолёный лосось, авокадо, руккола",
+    d_omelette:"Сливочный омлет с грибами", d_omelette_ing:"Яйца, сливочное масло, шампиньоны, багет, зелень",
+    d_continental:"Континентальный завтрак", d_continental_ing:"Жареные яйца, колбаски, фасоль, черри, микс-салат",
+    d_eggplant_burrata:"Хрустящий салат из баклажанов с бурратой", d_eggplant_burrata_ing:"Жареный баклажан, помидоры черри, сливочная бурата, соус унаги",
+    d_beef_warm:"Тёплый салат из говядины с рукколой", d_beef_warm_ing:"Нежная говядина, обжаренные грибы, болгарский перец, руккола",
+    d_achichuk:"Салат Ачичук", d_achichuk_ing:"Классика из спелых помидоров и красного лука с чили и базиликом",
+    d_caesar:"Салат Цезарь с курицей", d_caesar_ing:"Куриное филе гриль, микс-зелень, пармезан, хрустящие гренки",
+    d_mary:"Салат Мери", d_mary_ing:"Хрустящие куриные полоски, свежие овощи и кремовая моцарелла",
+    d_greek:"Греческий салат", d_greek_ing:"Свежие овощи, сыр фета, оливки, заправка из оливкового масла и орегано",
+    d_chuponcha:"Салат Чупонча", d_chuponcha_ing:"Помидоры и огурцы с традиционным соусом из сузьмы и базилика",
+    d_tuna:"Салат из тунца со свежей рукколой", d_tuna_ing:"Филе тунца, редис, перепелиные яйца, лимонно-медовая заправка",
+    d_pomidoro:"Салат Помидорро", d_pomidoro_ing:"Ассорти помидоров в секретном соусе с каперсами и долькой лимона",
+    d_bolognese_pasta:"Паста Болоньезе", d_bolognese_pasta_ing:"Классическая паста с фаршем и тёртым пармезаном",
+    d_fettuccine_chicken:"Феттуччине с курицей", d_fettuccine_chicken_ing:"Паста в сливочном соусе с кусочками нежного куриного филе",
+    d_rigatoni_stracciatella:"Ригатони со страчателлой", d_rigatoni_stracciatella_ing:"Паста в томатном соусе со сливочной страчателлой и соусом песто",
+    d_risoni_chicken:"Ризони с курицей", d_risoni_chicken_ing:"Маленькая рисовидная паста с куриным филе и пармезаном",
+    d_bolognese_pizza:"Пицца Болоньезе", d_bolognese_pizza_ing:"С фаршем, томатным соусом и пармезаном",
+    d_four_cheese:"Пицца Четыре сыра", d_four_cheese_ing:"Комбинация четырёх видов сыра на нежной сливочной основе",
+    d_chicken_mushroom:"Пицца с курицей и грибами", d_chicken_mushroom_ing:"Нежное куриное филе, шампиньоны и тягучая моцарелла",
+    d_pepperoni:"Пицца Пепперони", d_pepperoni_ing:"Острая колбаса пепперони, много моцареллы",
+    d_beef_burger_v3:"Говяжий бургер", d_beef_burger_v3_ing:"Сочная котлета из говядины с сыром в мягкой булочке",
+    d_chicken_burger_v3:"Куриный бургер", d_chicken_burger_v3_ing:"Жареное филе с листьями айсберга и фирменным соусом",
+    d_steak_burger:"Стейк-бургер", d_steak_burger_ing:"Говядина бон-филе с секретным соусом в мягкой булочке",
+    d_baguette_cheese:"Багет с сыром", d_baguette_cheese_ing:"Хрустящий багет, запечённый под сырной корочкой",
+    d_garlic_toasts:"Чесночные тосты", d_garlic_toasts_ing:"Гренки из ржаного хлеба с чесночным ароматом",
+    d_fried_dumplings:"Жареные пельмени", d_fried_dumplings_ing:"Золотистые мини-пельмени с мясной начинкой",
+    d_bichak:"Бичак с тыквой / с зеленью", d_bichak_ing:"Традиционные жареные пирожки с сочной начинкой",
+    d_tiger_shrimp:"Тигровые креветки в шафрановом соусе", d_tiger_shrimp_ing:"Крупные креветки в изысканном остром соусе",
+    d_spring_rolls:"Спринг-роллы", d_spring_rolls_ing:"Хрустящие рулетики с овощной начинкой",
+    d_quesadilla:"Кесадилья", d_quesadilla_ing:"Тортилья с сыром, курицей и пряными овощами",
+    d_salmon_bruschetta:"Брускетта с лососем", d_salmon_bruschetta_ing:"Тост с нежным сливочным сыром и ломтиками лосося",
+    d_cheese_sticks:"Хрустящие сырные палочки", d_cheese_sticks_ing:"Жареный в панировке сыр с тягучей начинкой",
+    d_medallion:"Медальон в сливочно-грибном соусе", d_medallion_ing:"Нежная говяжья вырезка с шампиньонами в сливках",
+    d_chicken_on_bed:"Курица на овощной подушке", d_chicken_on_bed_ing:"Половинка курицы, обжаренная до золотистой корочки",
+    d_crispy_wings:"Хрустящие крылышки", d_crispy_wings_ing:"Крылышки, обжаренные до идеального хруста в фирменном соусе",
+    d_orange_ribs:"Говяжьи рёбра в апельсиновом соусе", d_orange_ribs_ing:"Рёбра, томлённые и глазированные апельсиновым соком, мёдом и соевым соусом",
+    d_ribeye:"Стейк Рибай (100г)", d_ribeye_ing:"Классический сочный стейк из мраморной говядины",
+    d_tbone:"Стейк Ти-Бон (100г)", d_tbone_ing:"Стейк на кости, сочетающий два вида нежного мяса",
+    d_chicken_steak:"Куриный стейк", d_chicken_steak_ing:"Нежное куриное филе гриль с обжаренными овощами",
+    d_bonfilet_mushroom:"Стейк Бон-Филе с грибами", d_bonfilet_mushroom_ing:"Нежнейшая говяжья вырезка в густом сливочно-грибном соусе",
+    d_ilik:"Запечённый костный мозг", d_ilik_ing:"Маринованный костный мозг с чесноком, петрушкой и чили",
+    d_sausages_mash:"Колбаски гриль с картофельным пюре", d_sausages_mash_ing:"Аппетитные колбаски с нежным картофельным пюре",
+    d_potato_cream_soup:"Крем-суп из картофеля", d_potato_cream_soup_ing:"Бархатный суп с картофелем, мясной начинкой и нежными сливками",
+    d_burrata_fruit_salad:"Салат «Кремовая бурата» с фруктами", d_burrata_fruit_salad_ing:"Сливочный сыр с сочной клубникой, авокадо и дроблёными фисташками",
+    d_golden_trout:"Золотая форель", d_golden_trout_ing:"Форель, обжаренная до золотистого цвета, с фирменным соусом",
+    d_lamb_shank:"Баранья рулька по-восточному", d_lamb_shank_ing:"Томлёная баранья рулька с соусом деми-гляс и рисом басмати",
+    d_beef_tenderloin_grill:"Говяжья вырезка гриль", d_beef_tenderloin_grill_ing:"Филе вырезки с рисом басмати в томатном соусе",
+    d_bun:"Булочка", d_kulcha:"Кулча", d_borodinsky:"Бородинский хлеб", d_bread_assorted:"Хлебная корзина",
+    d_chuchvara_spinach:"Чучвара со шпинатом", d_chuchvara_spinach_ing:"Пельмени с сочной начинкой из свежего шпината и зелени",
+    d_chuchvara_meat:"Чучвара с мясом", d_chuchvara_meat_ing:"Пельмени с мелко рубленой говядиной и ароматными специями",
+    d_kayish_suzma:"Кайиш с сузьмой", d_kayish_suzma_ing:"Домашнее тесто с кисловатым соусом из процеженного йогурта",
+    d_kayish_podlivka:"Кайиш с подливкой", d_kayish_podlivka_ing:"Варёное домашнее тесто с насыщенной овощной подливкой",
+    d_kavurma_lagman:"Каурма лагман", d_kavurma_lagman_ing:"Жареная домашняя лапша с говядиной в томатном соусе",
+    d_dolma:"Долма в соусе", d_dolma_ing:"Фарш в молодых виноградных листьях с фирменным соусом",
+    d_kadu_barak:"Каду барак", d_kadu_barak_ing:"Нежные пельмени с начинкой из сладкой тыквы и специй",
+    d_mushroom_cream:"Грибной крем-суп", d_mushroom_cream_ing:"Бархатный суп из шампиньонов с нежными сливками",
+    d_lentil_cream:"Чечевичный крем-суп", d_lentil_cream_ing:"Традиционный суп из красной чечевицы, подаётся с лимоном",
+    d_beef_shurpa:"Говяжья шурпа", d_beef_shurpa_ing:"Наваристый бульон с крупными кусками говядины и овощей",
+    d_mastava:"Суп мастава", d_mastava_ing:"Сытный восточный суп с говядиной, рисом и ароматными специями",
+    d_chicken_soup:"Куриный суп", d_chicken_soup_ing:"Лёгкий домашний бульон с нежным куриным филе и тонкой лапшой",
+    d_okroshka:"Окрошка", d_okroshka_ing:"Освежающая смесь свежих овощей, зелени и сузьмы",
+    d_village_potato:"Картофель по-деревенски", d_grilled_corn:"Кукуруза гриль", d_fries:"Картофель фри",
+    d_grilled_veg:"Овощи гриль", d_grilled_mushrooms:"Грибы гриль", d_rice_veg:"Рис с овощами", d_mashed_potato:"Картофельное пюре",
+    d_espresso:"Эспрессо / Двойной", d_americano:"Американо / Двойной", d_cappuccino:"Капучино / Двойной",
+    d_latte:"Латте", d_frappuccino:"Фраппучино", d_raf:"Раф кофе", d_iced_americano:"Айс американо",
+    d_flat_white:"Флэт уайт", d_cocoa:"Какао", d_hot_chocolate:"Горячий шоколад", d_turkish_coffee:"Турецкий кофе", d_affogato:"Аффогато — кофейный десерт",
+    d_strawberry_shake:"Клубника", d_banana_shake:"Банан", d_milk_shake:"Молочный", d_chocolate_shake:"Шоколад", d_oreo_shake:"Орео",
+    d_raspberry_banana:"Малина-банан", d_berry_smoothie:"Ягодный микс", d_pelican:"Пеликан",
+    d_bonbon_cocktail:"Бон Бон", d_orange_cocktail:"Апельсин", d_strawberry_paradise:"Клубничный рай",
+    d_nectarine:"Нектарин", d_mojito_classic:"Классический мохито", d_sencha_romance:"Сенча романтика",
+    d_berry_delight:"Ягодное наслаждение", d_orange_passion:"Апельсин-маракуйя",
+    d_berry_symphony:"Ягодная симфония", d_ginger_storm:"Имбирный шторм",
+    d_assam_lemon:"Ассам / с лимоном", d_sencha_lemon:"Сенча / с лимоном", d_bardak:"Чай бардак",
+    d_hibiscus:"Чай каркаде", d_pomegranate_tea:"Гранатовый чай", d_raspberry_tea:"Малиновый чай",
+    d_ginger_tea:"Имбирный чай", d_masala_tea:"Чай масала", d_moroccan_tea:"Марокканский чай",
+    d_fruit_tea:"Фруктовый чай", d_le_bonnet:"Ле Бонне", d_herbal_tea_v3:"Травяной чай",
+    d_citrus_tea:"Цитрусовый чай", d_cherry_mulled:"Вишнёвый глинтвейн",
+    d_orange_berry:"Апельсин-ягода", d_winter_immunity:"Зимний иммунитет",
+    d_fruit_ice:"Фруктовый айс-ти", d_classic_ice:"Классический айс-ти", d_blue_lagoon:"Голубая лагуна",
+    d_classic_lemonade:"Классический лимонад", d_berry_lemonade:"Ягодный лимонад",
+    d_orange_lemonade:"Апельсиновый лимонад", d_tarragon_lemonade:"Тархунный лимонад",
+    d_orange_apple_fresh:"Апельсин / яблоко", d_apple_fresh:"Яблоко", d_carrot_apple_fresh:"Морковь / яблоко",
+    d_kiwi_mint:"Киви-мята", d_cucumber_celery:"Огурец-сельдерей", d_citrus_detox:"Цитрус", d_cucumber_water:"Огуречная вода"
   },
   es:{
-    tb_hours:"Abierto a diario 10:00 – 22:00", tb_address:"Calle Gavkushon, Bukhara, Uzbekistán",
+    tb_hours:"Abierto a diario · 10:00 – hasta el último cliente", tb_address:"Calle Gavkushon, Bukhara, Uzbekistán",
     nav_story:"Nuestra historia", nav_menu:"Menú", nav_team:"Equipo", nav_location:"Ubicación", nav_booking:"Reservar mesa",
     eyebrow:"Restaurante · Terraza · Ciudad Antigua de Bukhara",
     hero_sub:"Un acogedor rincón para desayunar, almorzar y cenar en la ciudad antigua de Bukhara.",
@@ -1659,13 +1817,98 @@ const i18n = {
     team_eyebrow:"Conoce al equipo", team_title:"Las personas detrás de la terraza", team_sub:"Un equipo pequeño y dedicado que trata a cada huésped como familia.",
     team1_name:"Anfitriona", team1_role:"Relaciones con huéspedes", team2_name:"Chef principal", team2_role:"Jefe de cocina", team3_name:"Equipo de servicio", team3_role:"Sala",
     loc_eyebrow:"Visítanos", loc_title:"Horario y ubicación", loc_sub:"Abierto todos los días — sin reserva previa, aunque para grupos se recomienda reservar.",
-    hours_title:"Horario", contact_title:"Contacto",
+    hours_title:"Horario", hours_val:"10:00 – hasta el último cliente", contact_title:"Contacto",
     mon:"Lunes", tue:"Martes", wed:"Miércoles", thu:"Jueves", fri:"Viernes", sat:"Sábado", sun:"Domingo",
     address_label:"Dirección", address_val:"Calle Gavkushon, Bukhara, Uzbekistán", phone_label:"Teléfono",
     book_eyebrow:"Reservar online", book_title:"Reservar mesa", book_sub:"Reserve su lugar en la terraza — confirmaremos por teléfono o WhatsApp.",
     book_name:"Su nombre", book_phone:"Número de teléfono", book_date:"Fecha", book_time:"Hora", book_guests:"Número de comensales", book_notes:"Peticiones especiales (opcional)", book_submit:"Solicitar reserva",
     book_error:"Por favor, complete todos los campos obligatorios.", book_success:"✓ ¡Su solicitud ha sido enviada! Confirmaremos pronto.",
-    footer_text:"Calle Gavkushon, Bukhara · +998 97 296 00 57 · Abierto todos los días, 10:00–22:00"
+    footer_text:"Calle Gavkushon, Bukhara · +998 97 296 00 57 · Abierto a diario, 10:00 – hasta el último cliente",
+    d_menemen:"Menemen con queso crema", d_menemen_ing:"Huevos, cebolla, tomates, pimiento, queso",
+    d_syrniki:"Syrniki con salsa de coco", d_syrniki_ing:"Requesón, salsa de coco, bayas o frutas",
+    d_benedict:"Huevos Benedict con aguacate y salmón", d_benedict_ing:"Panecillo, huevos escalfados, salmón ligeramente salado, aguacate, rúcula",
+    d_omelette:"Tortilla cremosa con champiñones", d_omelette_ing:"Huevos, mantequilla, champiñones, baguette, hierbas",
+    d_continental:"Desayuno continental", d_continental_ing:"Huevos fritos, salchichas, alubias, tomates cherry, ensalada mixta",
+    d_eggplant_burrata:"Ensalada de berenjena crujiente con burrata", d_eggplant_burrata_ing:"Berenjena frita, tomates cherry, burrata cremosa, salsa unagi",
+    d_beef_warm:"Ensalada templada de ternera y rúcula", d_beef_warm_ing:"Ternera tierna, champiñones salteados, pimiento, rúcula",
+    d_achichuk:"Ensalada Achichuk", d_achichuk_ing:"Un clásico de tomates maduros y cebolla roja con chile y albahaca",
+    d_caesar:"Ensalada César con pollo", d_caesar_ing:"Pechuga de pollo a la plancha, mezclum, parmesano, picatostes crujientes",
+    d_mary:"Ensalada Mary", d_mary_ing:"Tiras de pollo crujientes, verduras frescas y mozzarella cremosa",
+    d_greek:"Ensalada griega", d_greek_ing:"Verduras frescas, queso feta, aceitunas, aceite de oliva y aderezo de orégano",
+    d_chuponcha:"Ensalada Chuponcha", d_chuponcha_ing:"Tomates y pepinos con salsa tradicional de suzma y albahaca",
+    d_tuna:"Ensalada de atún con rúcula fresca", d_tuna_ing:"Filete de atún, rábano, huevos de codorniz, aderezo de limón y miel",
+    d_pomidoro:"Ensalada Pomidorro", d_pomidoro_ing:"Tomates variados en salsa secreta con alcaparras y una rodaja de limón",
+    d_bolognese_pasta:"Pasta Boloñesa", d_bolognese_pasta_ing:"Pasta clásica con carne picada y parmesano rallado",
+    d_fettuccine_chicken:"Fettuccine con pollo", d_fettuccine_chicken_ing:"Pasta en salsa cremosa con trozos de filete de pollo tierno",
+    d_rigatoni_stracciatella:"Rigatoni con stracciatella", d_rigatoni_stracciatella_ing:"Pasta en salsa de tomate con queso stracciatella cremoso y salsa pesto",
+    d_risoni_chicken:"Risoni con pollo", d_risoni_chicken_ing:"Pasta pequeña en forma de arroz con filete de pollo y parmesano",
+    d_bolognese_pizza:"Pizza Boloñesa", d_bolognese_pizza_ing:"Con carne picada, salsa de tomate y parmesano",
+    d_four_cheese:"Pizza cuatro quesos", d_four_cheese_ing:"Combinación de cuatro tipos de queso sobre una delicada base cremosa",
+    d_chicken_mushroom:"Pizza de pollo y champiñones", d_chicken_mushroom_ing:"Filete de pollo tierno, champiñones y mozzarella elástica",
+    d_pepperoni:"Pizza pepperoni", d_pepperoni_ing:"Salchicha de pepperoni picante, mucha mozzarella",
+    d_beef_burger_v3:"Hamburguesa de ternera", d_beef_burger_v3_ing:"Jugosa hamburguesa de ternera con queso en un panecillo suave",
+    d_chicken_burger_v3:"Hamburguesa de pollo", d_chicken_burger_v3_ing:"Filete frito con lechuga iceberg y nuestra salsa especial",
+    d_steak_burger:"Hamburguesa de steak", d_steak_burger_ing:"Ternera bon filet con salsa secreta en un panecillo suave",
+    d_baguette_cheese:"Baguette con queso", d_baguette_cheese_ing:"Baguette crujiente horneada bajo una costra de queso",
+    d_garlic_toasts:"Tostadas de ajo", d_garlic_toasts_ing:"Picatostes de pan de centeno con aroma a ajo",
+    d_fried_dumplings:"Dumplings fritos", d_fried_dumplings_ing:"Mini dumplings dorados con relleno de carne",
+    d_bichak:"Bichak con calabaza / con verduras", d_bichak_ing:"Pasteles fritos tradicionales con relleno jugoso",
+    d_tiger_shrimp:"Gambas tigre en salsa de azafrán", d_tiger_shrimp_ing:"Gambas grandes en una exquisita salsa picante",
+    d_spring_rolls:"Rollitos de primavera", d_spring_rolls_ing:"Rollitos crujientes con relleno de verduras",
+    d_quesadilla:"Quesadilla", d_quesadilla_ing:"Tortilla con queso, pollo y verduras picantes",
+    d_salmon_bruschetta:"Bruschetta de salmón", d_salmon_bruschetta_ing:"Tostada con delicado queso crema y lonchas de salmón",
+    d_cheese_sticks:"Palitos de queso crujientes", d_cheese_sticks_ing:"Queso frito empanado con relleno elástico",
+    d_medallion:"Medallón en salsa cremosa de champiñones", d_medallion_ing:"Tierno solomillo de ternera con champiñones en nata",
+    d_chicken_on_bed:"Pollo sobre cama de verduras", d_chicken_on_bed_ing:"Medio pollo frito hasta obtener una costra dorada",
+    d_crispy_wings:"Alitas crujientes", d_crispy_wings_ing:"Alitas fritas hasta el crujido perfecto en nuestra salsa especial",
+    d_orange_ribs:"Costillas de ternera en salsa de naranja", d_orange_ribs_ing:"Costillas cocinadas a fuego lento glaseadas con zumo de naranja, miel y salsa de soja",
+    d_ribeye:"Filete Ribeye (100g)", d_ribeye_ing:"Un clásico filete jugoso de ternera marmolada",
+    d_tbone:"Filete T-Bone (100g)", d_tbone_ing:"Un filete con hueso que combina dos tipos de carne tierna",
+    d_chicken_steak:"Steak de pollo", d_chicken_steak_ing:"Filete de pollo tierno a la plancha con verduras salteadas",
+    d_bonfilet_mushroom:"Steak Bon Filet con champiñones", d_bonfilet_mushroom_ing:"El solomillo de ternera más tierno en una espesa salsa cremosa de champiñones",
+    d_ilik:"Tuétano a la plancha", d_ilik_ing:"Tuétano marinado con ajo, perejil y chile",
+    d_sausages_mash:"Salchichas a la plancha con puré de patata", d_sausages_mash_ing:"Salchichas apetitosas con suave puré de patata",
+    d_potato_cream_soup:"Crema de patata", d_potato_cream_soup_ing:"Una cremosa sopa de patata con relleno de carne y nata",
+    d_burrata_fruit_salad:"Ensalada «Burrata cremosa» con frutas", d_burrata_fruit_salad_ing:"Queso cremoso con fresas jugosas, aguacate y pistachos triturados",
+    d_golden_trout:"Trucha dorada", d_golden_trout_ing:"Trucha frita hasta obtener un color dorado, servida con nuestra salsa especial",
+    d_lamb_shank:"Jarrete de cordero al estilo oriental", d_lamb_shank_ing:"Jarrete de cordero cocinado a fuego lento con salsa demi-glace y arroz basmati",
+    d_beef_tenderloin_grill:"Solomillo de ternera a la plancha", d_beef_tenderloin_grill_ing:"Filete de solomillo con arroz basmati en salsa de tomate",
+    d_bun:"Panecillo", d_kulcha:"Kulcha", d_borodinsky:"Pan Borodinsky", d_bread_assorted:"Pan variado",
+    d_chuchvara_spinach:"Chuchvara con espinacas", d_chuchvara_spinach_ing:"Dumplings con relleno jugoso de espinacas frescas y hierbas",
+    d_chuchvara_meat:"Chuchvara con carne", d_chuchvara_meat_ing:"Dumplings con ternera finamente picada y especias aromáticas",
+    d_kayish_suzma:"Kayish con suzma", d_kayish_suzma_ing:"Masa casera servida con una salsa agria de yogur colado",
+    d_kayish_podlivka:"Kayish con salsa sabrosa", d_kayish_podlivka_ing:"Masa casera hervida con una rica salsa de verduras",
+    d_kavurma_lagman:"Kavurma lagman", d_kavurma_lagman_ing:"Fideos caseros fritos con ternera en salsa de tomate",
+    d_dolma:"Dolma en salsa", d_dolma_ing:"Carne picada envuelta en hojas de parra jóvenes con nuestra salsa especial",
+    d_kadu_barak:"Kadu barak", d_kadu_barak_ing:"Delicados dumplings rellenos de calabaza dulce y especias",
+    d_mushroom_cream:"Crema de champiñones", d_mushroom_cream_ing:"Una suave sopa de champiñones con nata delicada",
+    d_lentil_cream:"Crema de lentejas", d_lentil_cream_ing:"Una sopa tradicional de lentejas rojas, servida con limón",
+    d_beef_shurpa:"Shurpa de ternera", d_beef_shurpa_ing:"Un caldo rico con grandes trozos de ternera y verduras",
+    d_mastava:"Sopa mastava", d_mastava_ing:"Una abundante sopa oriental con ternera, arroz y especias aromáticas",
+    d_chicken_soup:"Sopa de pollo", d_chicken_soup_ing:"Un ligero caldo casero con filete de pollo tierno y fideos finos",
+    d_okroshka:"Okroshka", d_okroshka_ing:"Una refrescante mezcla de verduras frescas, hierbas y yogur colado",
+    d_village_potato:"Patatas estilo campesino", d_grilled_corn:"Maíz a la plancha", d_fries:"Patatas fritas",
+    d_grilled_veg:"Verduras a la plancha", d_grilled_mushrooms:"Champiñones a la plancha", d_rice_veg:"Arroz con verduras", d_mashed_potato:"Puré de patata",
+    d_espresso:"Espresso / Doble", d_americano:"Americano / Doble", d_cappuccino:"Capuchino / Doble",
+    d_latte:"Latte", d_frappuccino:"Frappuccino", d_raf:"Café Raf", d_iced_americano:"Americano con hielo",
+    d_flat_white:"Flat White", d_cocoa:"Cacao", d_hot_chocolate:"Chocolate caliente", d_turkish_coffee:"Café turco", d_affogato:"Affogato — postre de café",
+    d_strawberry_shake:"Fresa", d_banana_shake:"Plátano", d_milk_shake:"Leche natural", d_chocolate_shake:"Chocolate", d_oreo_shake:"Oreo",
+    d_raspberry_banana:"Frambuesa-plátano", d_berry_smoothie:"Bayas mixtas", d_pelican:"Pelícano",
+    d_bonbon_cocktail:"Bon Bon", d_orange_cocktail:"Naranja", d_strawberry_paradise:"Paraíso de fresa",
+    d_nectarine:"Nectarina", d_mojito_classic:"Mojito clásico", d_sencha_romance:"Romance Sencha",
+    d_berry_delight:"Deleite de bayas", d_orange_passion:"Maracuyá de naranja",
+    d_berry_symphony:"Sinfonía de bayas", d_ginger_storm:"Tormenta de jengibre",
+    d_assam_lemon:"Assam / con limón", d_sencha_lemon:"Sencha / con limón", d_bardak:"Té bardak",
+    d_hibiscus:"Té de hibisco", d_pomegranate_tea:"Té de granada", d_raspberry_tea:"Té de frambuesa",
+    d_ginger_tea:"Té de jengibre", d_masala_tea:"Té masala", d_moroccan_tea:"Té marroquí",
+    d_fruit_tea:"Té de frutas", d_le_bonnet:"Le Bonnet", d_herbal_tea_v3:"Té de hierbas",
+    d_citrus_tea:"Té cítrico", d_cherry_mulled:"Té caliente de cereza",
+    d_orange_berry:"Naranja-baya", d_winter_immunity:"Inmunidad invernal",
+    d_fruit_ice:"Té helado de frutas", d_classic_ice:"Té helado clásico", d_blue_lagoon:"Laguna azul",
+    d_classic_lemonade:"Limonada clásica", d_berry_lemonade:"Limonada de bayas",
+    d_orange_lemonade:"Limonada de naranja", d_tarragon_lemonade:"Limonada de estragón",
+    d_orange_apple_fresh:"Naranja / Manzana", d_apple_fresh:"Manzana", d_carrot_apple_fresh:"Zanahoria / Manzana",
+    d_kiwi_mint:"Kiwi-menta", d_cucumber_celery:"Pepino-apio", d_citrus_detox:"Cítrico", d_cucumber_water:"Agua de pepino"
   }
 };
 let currentLang = 'en';
