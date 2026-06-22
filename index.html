@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bon Bon Terrace — Restaurant · Old City Bukhara</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS ─────────────────────────────────────────── */
 :root{
@@ -30,7 +30,7 @@
   --ease-in-out:cubic-bezier(0.65,0,0.35,1);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:auto;}
 body{
   background:#3A2C1C;
   color:var(--cream);
@@ -64,6 +64,7 @@ button{font-family:var(--f-body);cursor:pointer;}
   font-size:clamp(1.2rem,3vw,2rem);
   font-weight:300;letter-spacing:0.06em;
   text-align:center;color:var(--cream);line-height:1.55;
+  padding:0 2rem;
   animation:splashText 2.2s ease-in-out forwards;
 }
 #welcome-splash .splash-inner em{color:var(--gold);font-style:italic;}
@@ -178,17 +179,28 @@ button{font-family:var(--f-body);cursor:pointer;}
 .hero-media{
   position:absolute;inset:0;
   overflow:hidden;
+  background:var(--obsidian);
 }
-.hero-video{
+.hero-slide{
   position:absolute;inset:0;
   width:100%;height:100%;
   object-fit:cover;
-  animation:heroZoom 20s ease-in-out infinite alternate;
-  will-change:transform;
+  opacity:0;
+  animation:heroSlideshow 36s ease-in-out infinite;
+  will-change:opacity, transform;
 }
-@keyframes heroZoom{
-  0%{transform:scale(1);}
-  100%{transform:scale(1.08);}
+.hero-slide:nth-child(1){animation-delay:0s;}
+.hero-slide:nth-child(2){animation-delay:6s;}
+.hero-slide:nth-child(3){animation-delay:12s;}
+.hero-slide:nth-child(4){animation-delay:18s;}
+.hero-slide:nth-child(5){animation-delay:24s;}
+.hero-slide:nth-child(6){animation-delay:30s;}
+@keyframes heroSlideshow{
+  0%{opacity:0;transform:scale(1.04);}
+  4%{opacity:1;transform:scale(1.04);}
+  14%{opacity:1;transform:scale(1.1);}
+  18%{opacity:0;transform:scale(1.1);}
+  100%{opacity:0;}
 }
 .hero-overlay{
   position:absolute;inset:0;
@@ -377,8 +389,17 @@ button{font-family:var(--f-body);cursor:pointer;}
   color:var(--cream);line-height:1.25;
 }
 .menu-card-price{
-  font-family:var(--f-display);font-size:1.1rem;font-weight:500;
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:1rem;font-weight:700;font-style:italic;
   color:var(--gold);white-space:nowrap;flex-shrink:0;
+  display:inline-block;
+  letter-spacing:0.01em;
+  transition:transform 0.3s cubic-bezier(0.22,1,0.36,1), text-shadow 0.3s;
+  cursor:default;
+}
+.menu-card-price:hover{
+  transform:scale(1.35);
+  text-shadow:0 0 16px rgba(201,145,46,0.7), 0 0 32px rgba(201,145,46,0.3);
 }
 .menu-card-desc{
   font-size:0.85rem;color:var(--cream-dim);
@@ -460,7 +481,14 @@ button{font-family:var(--f-body);cursor:pointer;}
   background:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHEOBGHWuDGmaoI847sR0we7Mo6RZw03PYSqKaFANesCbcDkdLd_MwnBL0eA00ZXwbRyFs4T0afJI2wtrl6YcyzeUGjUA8AYpTvDRR2IDi5twOWKozpzktz3dsLmYummJEx1QzNmaLm-LVm=s1360-w1360-h1020-rw') center/cover no-repeat;
   opacity:0.3;
 }
-.video-section-inner{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+.video-section-inner{position:relative;z-index:1;max-width:860px;margin:0 auto;}
+.inpage-video{
+  width:100%;display:block;
+  aspect-ratio:16/9;background:#1a1208;
+  border-radius:4px;overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5);
+}
 .video-play-btn{
   display:inline-flex;align-items:center;justify-content:center;
   width:90px;height:90px;
@@ -474,111 +502,66 @@ button{font-family:var(--f-body);cursor:pointer;}
 }
 .video-play-btn:hover{background:var(--gold);color:var(--obsidian);transform:scale(1.08);}
 
-/* ── YOUTUBE EMBED ──────────────────────────────── */
-.yt-wrap{
-  position:relative;
-  max-width:900px;margin:0 auto;
-  border-radius:4px;overflow:hidden;
+/* ── REVIEWS SECTION ─────────────────────────────── */
+.reviews-bg{background:var(--obsidian-2);}
+.reviews-inner{max-width:1200px;margin:0 auto;padding:7rem 0 7rem 2.5rem;}
+.reviews-head{padding-right:2.5rem;margin-bottom:3rem;}
+.reviews-scroll{
+  display:flex;gap:1.5rem;overflow-x:auto;
+  padding:0.5rem 2.5rem 1.5rem 0;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+}
+.reviews-scroll::-webkit-scrollbar{height:6px;}
+.reviews-scroll::-webkit-scrollbar-track{background:transparent;}
+.reviews-scroll::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+.review-card{
+  flex:0 0 auto;
+  width:340px;
+  scroll-snap-align:start;
+  background:#3E2F1C;
   border:1px solid var(--line);
-  box-shadow:0 30px 80px rgba(0,0,0,0.5);
-  aspect-ratio:16/9;
-  background:#1a1208;
-  cursor:pointer;
+  border-radius:3px;
+  padding:1.8rem;
+  display:flex;flex-direction:column;gap:0.9rem;
 }
-.yt-thumb{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  transition:transform 0.6s var(--ease-out), opacity 0.3s;
-}
-.yt-wrap:hover .yt-thumb{transform:scale(1.03);}
-.yt-overlay{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:1.2rem;
-  background:linear-gradient(rgba(43,32,24,0.25),rgba(43,32,24,0.55));
-  transition:background 0.3s;
-}
-.yt-wrap:hover .yt-overlay{background:linear-gradient(rgba(43,32,24,0.1),rgba(43,32,24,0.4));}
-.yt-play-btn{
-  width:84px;height:84px;border-radius:50%;
-  border:2.5px solid var(--gold);
-  background:rgba(201,145,46,0.15);
-  backdrop-filter:blur(8px);
+.review-top{display:flex;align-items:center;justify-content:space-between;gap:0.8rem;}
+.review-author{display:flex;align-items:center;gap:0.8rem;}
+.review-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#A8742E);
   display:flex;align-items:center;justify-content:center;
-  color:var(--gold);
-  transition:transform 0.3s var(--ease-out),background 0.3s,color 0.3s;
+  font-family:var(--f-display);font-size:1.1rem;font-weight:500;
+  color:var(--obsidian);flex-shrink:0;
 }
-.yt-wrap:hover .yt-play-btn{
-  transform:scale(1.12);
-  background:var(--gold);
-  color:#1a1208;
+.review-name{font-size:0.92rem;font-weight:600;color:var(--cream);}
+.review-name a{color:var(--cream);transition:color 0.2s;}
+.review-name a:hover{color:var(--gold);}
+.review-meta{font-size:0.72rem;color:var(--cream-dim);margin-top:0.1rem;}
+.review-stars{color:var(--gold);font-size:0.85rem;letter-spacing:1px;white-space:nowrap;}
+.review-text{font-size:0.88rem;color:var(--cream-dim);line-height:1.65;flex:1;}
+.review-ratings{
+  display:flex;flex-wrap:wrap;gap:0.5rem;
+  padding-top:0.8rem;border-top:1px solid var(--line);
 }
-.yt-play-btn svg{margin-left:5px;}
-.yt-label{
-  font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;
-  color:var(--cream);font-weight:500;
-  text-shadow:0 1px 8px rgba(0,0,0,0.5);
+.review-rating-pill{
+  font-size:0.68rem;letter-spacing:0.04em;
+  padding:0.25rem 0.65rem;border-radius:999px;
+  background:rgba(201,145,46,0.12);color:var(--gold-light);
+  font-weight:500;
 }
-.yt-iframe{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  border:0;
+.review-dish{
+  font-size:0.72rem;color:var(--gold);font-weight:500;
+  display:flex;align-items:center;gap:0.4rem;
 }
-
-/* ── QUOTE BAND ─────────────────────────────────── */
-.quote-band{
-  background:linear-gradient(135deg,var(--gold) 0%,#A8742E 100%);
-  padding:6rem 2.5rem;text-align:center;
-  position:relative;overflow:hidden;
+.reviews-scroll-hint{
+  display:flex;align-items:center;gap:0.6rem;
+  margin-top:0.5rem;padding-right:2.5rem;
+  font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--cream-dim);
 }
-.quote-band::before{
-  content:'❝';
-  position:absolute;top:-1rem;left:50%;transform:translateX(-50%);
-  font-family:var(--f-display);font-size:12rem;color:rgba(0,0,0,0.08);
-  line-height:1;pointer-events:none;
-}
-.quote-text{
-  font-family:var(--f-display);font-size:clamp(1.4rem,3vw,2.2rem);
-  font-weight:300;font-style:italic;
-  color:var(--obsidian);max-width:780px;margin:0 auto 1.5rem;
-  line-height:1.45;position:relative;z-index:1;
-}
-.quote-attribution{
-  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:rgba(13,11,9,0.6);font-weight:500;
-}
-
-/* ── TEAM SECTION ──────────────────────────────── */
-.team-bg{background:var(--obsidian-2);}
-.team-inner{max-width:1200px;margin:0 auto;padding:7rem 2.5rem;}
-.team-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:2rem;margin-top:3.5rem;
-}
-.team-card{
-  background:#3E2F1C;border:1px solid var(--line);
-  border-radius:2px;overflow:hidden;
-  transition:transform 0.4s var(--ease-out),box-shadow 0.4s;
-}
-.team-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.4);}
-.team-photo{
-  width:100%;aspect-ratio:3/4;object-fit:cover;
-  background:linear-gradient(135deg,var(--obsidian-3),#2D2218);
-  display:flex;align-items:center;justify-content:center;
-  font-size:4rem;color:rgba(201,145,46,0.3);
-}
-.team-photo-img{width:100%;aspect-ratio:3/4;object-fit:cover;}
-.team-info{padding:1.8rem;}
-.team-role{
-  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--gold);font-weight:500;margin-bottom:0.5rem;
-}
-.team-name{
-  font-family:var(--f-display);font-size:1.5rem;
-  font-weight:300;color:var(--cream);margin-bottom:0.8rem;
-}
-.team-bio{font-size:0.85rem;color:var(--cream-dim);line-height:1.65;}
+.reviews-scroll-hint .arrow{color:var(--gold);font-size:1rem;animation:reviewArrowPulse 1.6s ease-in-out infinite;}
+@keyframes reviewArrowPulse{0%,100%{transform:translateX(0);opacity:0.6;}50%{transform:translateX(5px);opacity:1;}}
 
 /* ── LOCATION SECTION ───────────────────────────── */
 .location-bg{background:var(--obsidian);}
@@ -767,14 +750,344 @@ footer{
   .footer-top{grid-template-columns:1fr;}
   .stats-inner{grid-template-columns:repeat(2,1fr);gap:1rem;}
   .hero h1{font-size:2.5rem;}
+  .reviews-inner{padding:5rem 0 5rem 1.5rem;}
+  .reviews-head{padding-right:1.5rem;}
+  .review-card{width:280px;}
+  .reviews-scroll{padding-right:1.5rem;}
+  .reviews-scroll-hint{padding-right:1.5rem;}
 }
 @media(prefers-reduced-motion:reduce){
   *{transition:none !important;animation:none !important;}
 }
 a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+/* ══════════════════════════════════════════════════
+   ✦  FUTURISTIC UPGRADES — BON BON TERRACE
+   ══════════════════════════════════════════════════ */
+
+/* ── SCROLL PROGRESS BAR ─────────────────────────── */
+#scroll-progress{
+  position:fixed;top:0;left:0;z-index:9998;
+  height:2px;width:0%;
+  background:linear-gradient(90deg,#A8742E,var(--gold),#E8C36B,var(--gold),#A8742E);
+  background-size:200% 100%;
+  animation:progressShimmer 2s linear infinite;
+  transition:width 0.1s linear;
+  box-shadow:0 0 8px var(--gold),0 0 20px rgba(201,145,46,0.4);
+}
+@keyframes progressShimmer{
+  0%{background-position:200% 0;}
+  100%{background-position:-200% 0;}
+}
+
+/* ── CURSOR GLOW ─────────────────────────────────── */
+#cursor-glow{
+  position:fixed;pointer-events:none;z-index:9990;
+  width:320px;height:320px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(201,145,46,0.06) 0%,transparent 70%);
+  transform:translate(-50%,-50%);
+  transition:transform 0.05s linear;
+  mix-blend-mode:screen;
+}
+
+/* ── GLASSMORPHISM NAV ───────────────────────────── */
+.nav.scrolled{
+  background:rgba(43,32,24,0.55) !important;
+  backdrop-filter:blur(32px) saturate(1.6) !important;
+  -webkit-backdrop-filter:blur(32px) saturate(1.6) !important;
+  border-bottom:1px solid rgba(201,145,46,0.18) !important;
+  box-shadow:0 1px 0 rgba(201,145,46,0.12),0 8px 32px rgba(0,0,0,0.3) !important;
+}
+
+/* ── SHIMMER HEADINGS ────────────────────────────── */
+.section-title, .hero h1{
+  background:linear-gradient(105deg,
+    var(--cream) 0%,
+    var(--cream) 35%,
+    var(--gold-light) 50%,
+    var(--cream) 65%,
+    var(--cream) 100%
+  );
+  background-size:250% 100%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:headingShimmer 6s ease-in-out infinite;
+}
+@keyframes headingShimmer{
+  0%,100%{background-position:200% 0;}
+  50%{background-position:-200% 0;}
+}
+/* Keep gold italic in hero */
+.hero h1 em{
+  background:linear-gradient(105deg,
+    var(--gold) 0%,
+    var(--gold-light) 40%,
+    #fff8e1 55%,
+    var(--gold-light) 70%,
+    var(--gold) 100%
+  );
+  background-size:250% 100%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:headingShimmer 4s ease-in-out infinite;
+  font-style:italic;
+}
+
+/* ── GLOW BUTTONS ────────────────────────────────── */
+.btn-primary,.btn-submit{
+  position:relative;overflow:hidden;
+  box-shadow:0 0 0 0 rgba(201,145,46,0);
+  transition:background 0.25s,transform 0.2s,box-shadow 0.3s !important;
+}
+.btn-primary::before,.btn-submit::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.25) 50%,transparent 70%);
+  background-size:200% 100%;
+  transform:translateX(-100%);
+  transition:transform 0.5s var(--ease-out);
+}
+.btn-primary:hover::before,.btn-submit:hover::before{
+  transform:translateX(100%);
+}
+.btn-primary:hover,.btn-submit:hover{
+  box-shadow:0 0 20px rgba(201,145,46,0.5),0 0 40px rgba(201,145,46,0.2) !important;
+  transform:translateY(-3px) !important;
+}
+
+/* ── GLASSMORPHISM CARDS ─────────────────────────── */
+.menu-card{
+  background:rgba(62,47,28,0.7) !important;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(201,145,46,0.08);
+  position:relative;overflow:hidden;
+  transition:background 0.3s,box-shadow 0.3s !important;
+}
+.menu-card::before{
+  content:'';position:absolute;top:0;left:-60%;
+  width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(201,145,46,0.06),transparent);
+  transform:skewX(-15deg);
+  transition:left 0.6s ease;
+  pointer-events:none;
+}
+.menu-card:hover{
+  background:rgba(74,56,34,0.85) !important;
+  box-shadow:inset 0 0 0 1px rgba(201,145,46,0.2);
+}
+.menu-card:hover::before{left:160%;}
+
+.review-card{
+  background:rgba(62,47,28,0.65) !important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(201,145,46,0.15) !important;
+  transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s;
+}
+.review-card:hover{
+  border-color:rgba(201,145,46,0.4) !important;
+  box-shadow:0 0 24px rgba(201,145,46,0.12),0 8px 32px rgba(0,0,0,0.3);
+  transform:translateY(-4px);
+}
+
+.info-glass{
+  background:rgba(62,47,28,0.55) !important;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(201,145,46,0.18) !important;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.info-glass:hover{
+  border-color:rgba(201,145,46,0.35) !important;
+  box-shadow:0 0 24px rgba(201,145,46,0.1);
+}
+
+/* ── AMBIENT GOLD GLOW ON SECTIONS ──────────────── */
+.stats-bar{
+  position:relative;overflow:hidden;
+}
+.stats-bar::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 0%,rgba(255,200,60,0.04) 50%,transparent 100%);
+  animation:ambientPulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes ambientPulse{
+  0%,100%{opacity:0.5;}
+  50%{opacity:1;}
+}
+
+/* ── GOLDEN PARTICLE CANVAS ──────────────────────── */
+#hero-particles{
+  position:absolute;inset:0;z-index:1;
+  pointer-events:none;
+  opacity:0.7;
+}
+
+/* ── BOOKING FORM GLOW INPUTS ────────────────────── */
+.form-input:focus,.form-textarea:focus{
+  border-color:var(--gold) !important;
+  background:rgba(250,243,227,0.07) !important;
+  box-shadow:0 0 0 3px rgba(201,145,46,0.15),0 0 16px rgba(201,145,46,0.1) !important;
+}
+
+/* ── NAV LOGO HOVER SHIMMER ──────────────────────── */
+.nav-logo{
+  position:relative;
+  transition:text-shadow 0.3s;
+}
+.nav-logo:hover{
+  text-shadow:0 0 20px rgba(201,145,46,0.3);
+}
+
+/* ── CATEGORY PILLS — GLOW ON ACTIVE ────────────── */
+.menu-cat-pill.active{
+  box-shadow:0 0 12px rgba(201,145,46,0.4),0 0 24px rgba(201,145,46,0.15);
+}
+
+/* ── SCROLL LINE HERO — BRIGHTEN ────────────────── */
+.scroll-line{
+  box-shadow:0 0 6px var(--gold);
+}
+
+/* ── GALLERY HOVER GLOW ──────────────────────────── */
+.gallery-grid a:hover img{
+  filter:brightness(1.05) saturate(1.1);
+}
+.gallery-grid a:hover::after{
+  background:rgba(201,145,46,0.06) !important;
+}
+
+/* ── STATS BAR NUMBERS — GLOW ────────────────────── */
+.stat-num{
+  text-shadow:0 0 20px rgba(43,32,24,0.3);
+}
+
+/* ── FOOTER GLOW LINE ────────────────────────────── */
+footer{
+  box-shadow:0 -1px 0 rgba(201,145,46,0.15),
+             0 -20px 60px rgba(201,145,46,0.04);
+}
+
+/* ── REVEAL — SMOOTHER ───────────────────────────── */
+.reveal{
+  transition:opacity 1s var(--ease-out),transform 1s var(--ease-out) !important;
+}
+
+/* ── SOCIAL BUTTONS — UPGRADED ───────────────────── */
+.social-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.6rem 1.2rem;border-radius:6px;
+  font-size:0.82rem;font-weight:600;letter-spacing:0.04em;
+  transition:all 0.25s var(--ease-out);
+  text-decoration:none;
+}
+.social-btn-insta{
+  border:1.5px solid rgba(225,48,108,0.5);
+  color:#e1306c;background:rgba(225,48,108,0.08);
+}
+.social-btn-insta:hover{
+  background:rgba(225,48,108,0.18);
+  border-color:#e1306c;
+  box-shadow:0 0 16px rgba(225,48,108,0.25);
+  transform:translateY(-2px);
+}
+.social-btn-tg{
+  border:1.5px solid rgba(41,182,246,0.5);
+  color:#29b6f6;background:rgba(41,182,246,0.08);
+}
+.social-btn-tg:hover{
+  background:rgba(41,182,246,0.18);
+  border-color:#29b6f6;
+  box-shadow:0 0 16px rgba(41,182,246,0.25);
+  transform:translateY(-2px);
+}
+
+/* ── BIG SOCIAL CARDS ────────────────────────────── */
+.social-cards-row{
+  grid-column:2;
+  display:flex;flex-direction:column;gap:1rem;
+  margin-top:1rem;
+}
+.social-card{
+  display:flex;align-items:center;gap:1.2rem;
+  padding:1.4rem 1.8rem;
+  border-radius:8px;
+  text-decoration:none;
+  transition:transform 0.3s var(--ease-out), box-shadow 0.3s, border-color 0.3s;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.social-card-insta{
+  background:rgba(225,48,108,0.08);
+  border:1.5px solid rgba(225,48,108,0.3);
+  color:#e1306c;
+}
+.social-card-insta:hover{
+  background:rgba(225,48,108,0.15);
+  border-color:rgba(225,48,108,0.7);
+  box-shadow:0 0 28px rgba(225,48,108,0.2), 0 8px 32px rgba(0,0,0,0.3);
+  transform:translateY(-4px);
+}
+.social-card-tg{
+  background:rgba(41,182,246,0.08);
+  border:1.5px solid rgba(41,182,246,0.3);
+  color:#29b6f6;
+}
+.social-card-tg:hover{
+  background:rgba(41,182,246,0.15);
+  border-color:rgba(41,182,246,0.7);
+  box-shadow:0 0 28px rgba(41,182,246,0.2), 0 8px 32px rgba(0,0,0,0.3);
+  transform:translateY(-4px);
+}
+.social-card-icon{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.06);
+  flex-shrink:0;
+}
+.social-card-text{
+  display:flex;flex-direction:column;gap:0.15rem;flex:1;
+}
+.social-card-label{
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
+  opacity:0.6;font-weight:500;
+}
+.social-card-name{
+  font-family:var(--f-display);font-size:1.4rem;font-weight:400;
+  color:var(--cream);line-height:1;
+}
+.social-card-handle{
+  font-size:0.8rem;opacity:0.6;margin-top:0.1rem;
+}
+.social-card-arrow{
+  font-size:1.4rem;opacity:0.5;transition:opacity 0.2s,transform 0.2s;
+}
+.social-card:hover .social-card-arrow{
+  opacity:1;transform:translateX(4px);
+}
+
+/* Fix grid to accommodate social cards */
+.location-grid{
+  grid-template-columns:1fr 1fr !important;
+}
+
+@media(max-width:900px){
+  .social-cards-row{grid-column:1;}
+  .location-grid{grid-template-columns:1fr !important;}
+}
+
 </style>
 </head>
 <body>
+
+<!-- FUTURISTIC ELEMENTS -->
+<div id="scroll-progress"></div>
+<div id="cursor-glow"></div>
 
 <!-- WELCOME SPLASH -->
 <div id="welcome-splash">
@@ -797,8 +1110,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <ul class="nav-links">
     <li><a href="#story" data-i18n="nav_story">Our Story</a></li>
     <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
-    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
     <li><a href="#location" data-i18n="nav_location">Location</a></li>
+    <li><a href="#location" style="color:var(--gold);">Contacts &amp; Social Media</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0.5rem;">
     <div class="nav-lang">
@@ -817,27 +1131,23 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
-  <a href="#story" onclick="closeMobile()">Our Story</a>
-  <a href="#menu" onclick="closeMobile()">Menu</a>
-  <a href="#gallery" onclick="closeMobile()">Gallery</a>
-  <a href="#location" onclick="closeMobile()">Location</a>
-  <a href="#booking" onclick="closeMobile()" style="color:var(--gold);">Book a Table</a>
+  <a href="#story" onclick="closeMobile()" data-i18n="nav_story">Our Story</a>
+  <a href="#menu" onclick="closeMobile()" data-i18n="nav_menu">Menu</a>
+  <a href="#gallery" onclick="closeMobile()" data-i18n="nav_gallery">Gallery</a>
+  <a href="#location" onclick="closeMobile()" data-i18n="nav_location">Location</a>
+  <a href="#booking" onclick="closeMobile()" style="color:var(--gold);" data-i18n="nav_booking">Book a Table</a>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-media">
-    <video
-      class="hero-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-      poster="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHHuNu633oELNfIKPwJBpZQqZsny4Y84FWHXFajcZcLHaRv30EgQ8U02xAjhtHUBTAyf5KNcBAeNOlM-eN0jP-8yAXfqSKfl89kHdjHfC4IA6pacM9hPkGv-PBVchCvastdZwWY9jzxZlFS=s1360-w1360-h1020-rw"
-    >
-      <source src="hero-video.mp4" type="video/mp4">
-    </video>
+    <canvas id="hero-particles"></canvas>
+    <img class="hero-slide" src="https://avatars.mds.yandex.net/get-altay/20368588/2a0000019df2adbc6b721eaf008ff9f18d39/XXXL" alt="Bon Bon Terrace dish">
+    <img class="hero-slide" src="https://avatars.mds.yandex.net/get-altay/16888214/2a0000019a3ad5e74a10b8351be206cb2911/XXXL" alt="Bon Bon Terrace interior">
+    <img class="hero-slide" src="https://avatars.mds.yandex.net/get-altay/2433982/2a000001704cc4ada74b4820c70a321f43fe/XXXL" alt="Bon Bon Terrace food">
+    <img class="hero-slide" src="https://avatars.mds.yandex.net/get-altay/2363990/2a0000017b5f1e2dd42bd491888ed68b17c8/XXXL" alt="Bon Bon Terrace atmosphere">
+    <img class="hero-slide" src="https://itin-dev.wanderlogstatic.com/freeImage/FhVuD38dt2YYgA3J1ovDsNgomXB4Edsl" alt="Bon Bon Terrace terrace view">
+    <img class="hero-slide" src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHTLx2vTZfk5TvSvkjPtmQKpAPJLg2dct0ZhsJzz6IN7t1o22RNZwT9cByNhxjqPVuEmBzYh-HARqz_mmz4goF0Th-28LGfFwPQ7tWSqZNJYxfgmjjh8BirasUptfXuRvQa1ELmkA=w243-h406-n-k-no-nu" alt="Bon Bon Terrace dining">
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -851,7 +1161,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   </div>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
-    <span>Scroll</span>
+    <span data-i18n="scroll_label">Scroll</span>
   </div>
 </section>
 
@@ -871,7 +1181,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       <div class="story-ornament">
         <span class="story-ornament-icon">✦</span>
       </div>
-      <a href="#booking" class="btn-primary">Reserve Your Table</a>
+      <a href="#booking" class="btn-primary" data-i18n="reserve_btn">Reserve Your Table</a>
     </div>
   </div>
 </div>
@@ -881,19 +1191,19 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <div class="stats-inner">
     <div class="reveal">
       <div class="stat-num" data-count="21">21+</div>
-      <div class="stat-label">Menu Categories</div>
+      <div class="stat-label" data-i18n="stat1">Menu Categories</div>
     </div>
     <div class="reveal reveal-delay-1">
-      <div class="stat-num">10–22</div>
-      <div class="stat-label">Open Daily</div>
+      <div class="stat-num" style="font-size:1.7rem;" data-i18n="stat2_num">10 AM – Last Guest</div>
+      <div class="stat-label" data-i18n="stat2">Open Daily</div>
     </div>
     <div class="reveal reveal-delay-2">
       <div class="stat-num">❤️</div>
-      <div class="stat-label">Guests Love Us</div>
+      <div class="stat-label" data-i18n="stat3">Guests Love Us</div>
     </div>
     <div class="reveal reveal-delay-3">
       <div class="stat-num">100%</div>
-      <div class="stat-label">Fresh Ingredients</div>
+      <div class="stat-label" data-i18n="stat4">Fresh Ingredients</div>
     </div>
   </div>
 </div>
@@ -1038,7 +1348,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
           <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_mastava">Mastava Soup</span><span class="menu-card-price">40,000 UZS</span></div><p class="menu-card-desc" data-i18n="d_mastava_ing">A hearty Eastern soup with beef, rice, and aromatic spices</p></div>
           <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_chicken_soup">Chicken Soup</span><span class="menu-card-price">30,000 UZS</span></div><p class="menu-card-desc" data-i18n="d_chicken_soup_ing">A light homemade broth with tender chicken fillet and thin noodles</p></div>
           <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_okroshka">Okroshka</span><span class="menu-card-price">30,000 UZS</span></div><p class="menu-card-desc" data-i18n="d_okroshka_ing">A refreshing mix of fresh vegetables, herbs, and strained yogurt</p><div class="menu-card-badges"><span class="badge badge-veg">🌱 Vegetarian</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_potato_cream_soup">Potato Cream Soup</span><span class="menu-card-price">30,000 UZS</span></div><p class="menu-card-desc">A velvety soup with potato, meat filling, and delicate cream</p></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_potato_cream_soup">Potato Cream Soup</span><span class="menu-card-price">30,000 UZS</span></div><p class="menu-card-desc" data-i18n="d_potato_cream_soup_ing">A velvety soup with potato, meat filling, and delicate cream</p></div>
         </div>
 
         <div class="menu-cat-section" data-cat="sides">
@@ -1186,51 +1496,51 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
           <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_grilled_mushrooms">Grilled Mushrooms</span><span class="menu-card-price">35,000 UZS</span></div></div>
           <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_mashed_potato">Mashed Potatoes</span><span class="menu-card-price">20,000 UZS</span></div></div>
         </div>
-        <!-- Coffee/Drinks vegan same as ordinary – abbreviated for brevity -->
+        <!-- Coffee/Drinks vegan same as ordinary – abbreviated -->
         <div class="menu-cat-section" data-cat="coffee">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Espresso / Double</span><span class="menu-card-price">30,000 / 40,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Cappuccino / Double</span><span class="menu-card-price">35,000 / 45,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Latte</span><span class="menu-card-price">40,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Affogato</span><span class="menu-card-price">50,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_espresso">Espresso / Double</span><span class="menu-card-price">30,000 / 40,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_cappuccino">Cappuccino / Double</span><span class="menu-card-price">35,000 / 45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_latte">Latte</span><span class="menu-card-price">40,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_affogato">Affogato — Coffee Dessert</span><span class="menu-card-price">50,000 UZS</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="milkshakes">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Strawberry</span><span class="menu-card-price">45,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Oreo</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_strawberry_shake">Strawberry</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_oreo_shake">Oreo</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="smoothies">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Raspberry Banana</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Mixed Berry</span><span class="menu-card-price">50,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Pelican</span><span class="menu-card-price">50,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_raspberry_banana">Raspberry Banana</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_berry_smoothie">Mixed Berry</span><span class="menu-card-price">50,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_pelican">Pelican</span><span class="menu-card-price">50,000 UZS</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="cocktails">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Bon Bon</span><span class="menu-card-price">45,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Strawberry Paradise</span><span class="menu-card-price">45,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Classic Mojito</span><span class="menu-card-price">45,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Orange Passion Fruit</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_bonbon_cocktail">Bon Bon</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_strawberry_paradise">Strawberry Paradise</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_mojito_classic">Classic Mojito</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_orange_passion">Orange Passion Fruit</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="tea">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Pomegranate Tea</span><span class="menu-card-price">40,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Raspberry Tea</span><span class="menu-card-price">45,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Ginger Tea</span><span class="menu-card-price">50,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Le Bonnet</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_pomegranate_tea">Pomegranate Tea</span><span class="menu-card-price">40,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_raspberry_tea">Raspberry Tea</span><span class="menu-card-price">45,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_ginger_tea">Ginger Tea</span><span class="menu-card-price">50,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_le_bonnet">Le Bonnet</span><span class="menu-card-price">45,000 UZS</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="icedtea">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Fruit Iced Tea</span><span class="menu-card-price">40,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Blue Lagoon</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_fruit_ice">Fruit Iced Tea</span><span class="menu-card-price">40,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_blue_lagoon">Blue Lagoon</span><span class="menu-card-price">45,000 UZS</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="lemonades">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Classic Lemonade</span><span class="menu-card-price">35,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Berry Lemonade</span><span class="menu-card-price">50,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Orange Lemonade</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_classic_lemonade">Classic Lemonade</span><span class="menu-card-price">35,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_berry_lemonade">Berry Lemonade</span><span class="menu-card-price">50,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_orange_lemonade">Orange Lemonade</span><span class="menu-card-price">45,000 UZS</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="freshes">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Orange / Apple</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Apple</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_orange_apple_fresh">Orange / Apple</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_apple_fresh">Apple</span><span class="menu-card-price">45,000 UZS</span></div></div>
         </div>
         <div class="menu-cat-section" data-cat="detox">
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Kiwi-Mint</span><span class="menu-card-price">45,000 UZS</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Citrus</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
-          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name">Cucumber Water</span><span class="menu-card-price">35,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_kiwi_mint">Kiwi-Mint</span><span class="menu-card-price">45,000 UZS</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_citrus_detox">Citrus</span><span class="menu-card-price">50,000 UZS</span></div><div class="menu-card-badges"><span class="badge badge-star">⭐ Bestseller</span></div></div>
+          <div class="menu-card"><div class="menu-card-header"><span class="menu-card-name" data-i18n="d_cucumber_water">Cucumber Water</span><span class="menu-card-price">35,000 UZS</span></div></div>
         </div>
       </div><!-- /panel-vegan -->
 
@@ -1243,10 +1553,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <div class="gallery-inner">
     <div class="gallery-title-row reveal">
       <div>
-        <span class="eyebrow">Gallery</span>
-        <h2 class="section-title">A Taste of Bon Bon</h2>
+        <span class="eyebrow" data-i18n="gallery_eyebrow">Gallery</span>
+        <h2 class="section-title" data-i18n="gallery_title">A Taste of Bon Bon</h2>
       </div>
-      <p class="section-sub" style="max-width:360px;">Sunlight on the terrace, steam over the table — moments that bring people back.</p>
+      <p class="section-sub" style="max-width:360px;" data-i18n="gallery_sub">Sunlight on the terrace, steam over the table — moments that bring people back.</p>
     </div>
     <div class="gallery-grid" id="galleryGrid">
       <a href="#" data-img="https://avatars.mds.yandex.net/get-altay/20368588/2a0000019df2adbc6b721eaf008ff9f18d39/XXXL" onclick="openLightbox(this,event)">
@@ -1282,33 +1592,131 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <!-- VIDEO WALKTHROUGH -->
 <div class="video-section">
   <div class="video-section-inner reveal">
-    <span class="eyebrow" style="color:var(--gold-light);">Experience</span>
-    <h2 class="section-title" style="color:var(--cream);font-size:clamp(2rem,4vw,3rem);">Experience Bon Bon Terrace</h2>
-    <p style="color:var(--cream-dim);margin-top:1rem;margin-bottom:2.5rem;">From morning light on the terrace to candlelit evenings — step inside before you arrive.</p>
+    <span class="eyebrow" style="color:var(--gold-light);" data-i18n="video_eyebrow">Experience</span>
+    <h2 class="section-title" style="color:var(--cream);font-size:clamp(2rem,4vw,3rem);" data-i18n="video_title">Experience Bon Bon Terrace</h2>
+    <p style="color:var(--cream-dim);margin-top:1rem;margin-bottom:2.5rem;" data-i18n="video_sub">From morning light on the terrace to candlelit evenings — step inside before you arrive.</p>
 
-    <!-- Autoplay video — replace src with your actual video file URL when ready -->
-    <div style="max-width:860px;margin:2.5rem auto 0;border-radius:4px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,0.5);">
-      <video
-        id="mainVideo"
-        style="width:100%;display:block;aspect-ratio:16/9;background:#1a1208;"
-        autoplay
-        muted
-        loop
-        playsinline
-        controls
-        poster="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHHuNu633oELNfIKPwJBpZQqZsny4Y84FWHXFajcZcLHaRv30EgQ8U02xAjhtHUBTAyf5KNcBAeNOlM-eN0jP-8yAXfqSKfl89kHdjHfC4IA6pacM9hPkGv-PBVchCvastdZwWY9jzxZlFS=s1360-w1360-h1020-rw"
-      >
-        <source src="restaurant-walkthrough.mp4" type="video/mp4">
-      </video>
-    </div>
+    <!-- Simple autoplay video — just replace the file below with your own walkthrough video -->
+    <video
+      class="inpage-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      controls
+    >
+      <source src="bonbon-walkthrough.mp4" type="video/mp4">
+    </video>
 
   </div>
 </div>
 
 <!-- QUOTE -->
-<div class="quote-band">
-  <blockquote class="quote-text" data-i18n="quote">«Incredibly delicious food and a pleasant atmosphere, friendly service staff — everything at the highest level. We come often.»</blockquote>
-  <p class="quote-attribution">— A valued guest · Bon Bon Terrace, Bukhara</p>
+<!-- REVIEWS -->
+<div class="reviews-bg" id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-head reveal">
+      <span class="eyebrow" data-i18n="reviews_eyebrow">Guest Reviews</span>
+      <h2 class="section-title" data-i18n="reviews_title">What Our Guests Say</h2>
+      <p class="section-sub" data-i18n="reviews_sub">Real words from real visitors to Bon Bon Terrace.</p>
+    </div>
+
+    <div class="reviews-scroll">
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="review-author">
+            <div class="review-avatar">J</div>
+            <div>
+              <div class="review-name">John Brown</div>
+              <div class="review-meta">Google Reviews</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <p class="review-text" data-i18n="rev_john">Had a great time in the restaurant. I went twice! Food was very good and waiters lovely. Special mention to the eggplant salad, pumpkin bichak and delicious waffles. One of the best locations.</p>
+        <div class="review-ratings">
+          <span class="review-rating-pill" data-i18n="rev_food_label">Food: 5/5</span>
+          <span class="review-rating-pill" data-i18n="rev_service_label">Service: 5/5</span>
+          <span class="review-rating-pill" data-i18n="rev_atmosphere_label">Atmosphere: 5/5</span>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="review-author">
+            <div class="review-avatar">J</div>
+            <div>
+              <div class="review-name">Joshua</div>
+              <div class="review-meta">Google Reviews</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <p class="review-text" data-i18n="rev_joshua">We went 4 times in 9 days because the ginger tea and the food were very good. We tried the waffles that were amazing, the meat boat, the khachapuri and some sharing food. All was lovely! The staff didn't look so friendly but it was no problem as they got used to us along the way.</p>
+        <div class="review-dish">🍽️ <span data-i18n="rev_recommended_label">Recommended:</span> Chocolate Waffle</div>
+        <div class="review-ratings">
+          <span class="review-rating-pill" data-i18n="rev_food_label">Food: 5/5</span>
+          <span class="review-rating-pill" data-i18n="rev_service_label">Service: 5/5</span>
+          <span class="review-rating-pill" data-i18n="rev_atmosphere_label">Atmosphere: 5/5</span>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="review-author">
+            <div class="review-avatar">V</div>
+            <div>
+              <div class="review-name"><a href="https://www.google.com/maps/contrib/101760456497474553809/reviews?hl=en-GB" target="_blank" rel="noopener">Varun Sahgal</a></div>
+              <div class="review-meta" data-i18n="rev_varun_meta">2 years ago · Takeaway · Dinner · UZS 50–100k</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★☆</div>
+        </div>
+        <p class="review-text" data-i18n="rev_varun">A very romantic restaurant with seating on the open side road, another set of seating one step above but still outside on the balcony, and indoor seating too. The menu is decent for both veg and non-veg guests, with loads of beverage options. We ordered a vegetarian pizza and a pomegranate lemonade. The lemonade was nice but the pizza wasn't good at all — it had a burnt smell and was super bland. Tasteless 😟</p>
+        <div class="review-ratings">
+          <span class="review-rating-pill" data-i18n="rev_food4_label">Food: 4/5</span>
+          <span class="review-rating-pill" data-i18n="rev_service_label">Service: 5/5</span>
+          <span class="review-rating-pill" data-i18n="rev_atmosphere_label">Atmosphere: 5/5</span>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="review-author">
+            <div class="review-avatar">M</div>
+            <div>
+              <div class="review-name">Mohammad Radwan</div>
+              <div class="review-meta">Google Reviews</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <p class="review-text" data-i18n="rev_mohammad">Great experience and excellent service from the whole team. Special thanks to the receptionist for the warm welcome and to waiter Ibrahim for his amazing service and professionalism. Highly recommended!</p>
+        <div class="review-ratings">
+          <span class="review-rating-pill" data-i18n="rev_service_label">Service: 5/5</span>
+          <span class="review-rating-pill" data-i18n="rev_atmosphere_label">Atmosphere: 5/5</span>
+        </div>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="review-author">
+            <div class="review-avatar">M</div>
+            <div>
+              <div class="review-name"><a href="https://www.google.com/maps/contrib/110195880937065614425/reviews?hl=en-GB" target="_blank" rel="noopener">Michael Costa</a></div>
+              <div class="review-meta">Google Reviews</div>
+            </div>
+          </div>
+        </div>
+        <p class="review-text" data-i18n="rev_michael">There are many kinds of cuisines to choose from. Fruit tea looked fancy and the pepperoni pizza was super tasty and big enough for two people.</p>
+      </div>
+    </div>
+
+    <div class="reviews-scroll-hint reveal">
+      <span data-i18n="reviews_scroll_hint">Scroll for more reviews</span>
+      <span class="arrow">→</span>
+    </div>
+  </div>
 </div>
 
 <!-- LOCATION -->
@@ -1336,11 +1744,32 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
           <ul>
             <li><span data-i18n="address_label">Address</span><span data-i18n="address_val">Gavkushon St., Bukhara</span></li>
             <li><span data-i18n="phone_label">Phone</span><span><a href="tel:+998972960057" style="color:var(--gold-light);">+998 97 296 00 57</a></span></li>
-            <li><span>WhatsApp</span><span><a href="https://wa.me/998941781112" style="color:var(--gold-light);">Message Us</a></span></li>
+            <li><span data-i18n="whatsapp_label">WhatsApp</span><span><a href="https://wa.me/998941781112" style="color:var(--gold-light);" data-i18n="message_us">Message Us</a></span></li>
           </ul>
-          <div class="social-row" style="margin-top:1.5rem;">
-            <a href="https://www.instagram.com/bonbonterrace.uz/" target="_blank" rel="noopener" class="social-btn">📸 Instagram</a>
-            <a href="#" class="social-btn">💬 Telegram</a>
+          <!-- BIG SOCIAL CARDS inside contact box -->
+          <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:1.5rem;">
+            <a href="https://www.instagram.com/bonbonterrace.uz/" target="_blank" rel="noopener" class="social-card social-card-insta">
+              <div class="social-card-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+              </div>
+              <div class="social-card-text">
+                <span class="social-card-label">Follow us on</span>
+                <span class="social-card-name">Instagram</span>
+                <span class="social-card-handle">@bonbonterrace.uz</span>
+              </div>
+              <div class="social-card-arrow">→</div>
+            </a>
+            <a href="https://t.me/bonbonterrace" target="_blank" rel="noopener" class="social-card social-card-tg">
+              <div class="social-card-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.26 13.4 4.31 12.48c-.658-.205-.671-.658.138-.975l10.868-4.19c.548-.198 1.028.12.846.933z"/></svg>
+              </div>
+              <div class="social-card-text">
+                <span class="social-card-label">Message us on</span>
+                <span class="social-card-name">Telegram</span>
+                <span class="social-card-handle">@bonbonterrace</span>
+              </div>
+              <div class="social-card-arrow">→</div>
+            </a>
           </div>
         </div>
       </div>
@@ -1364,14 +1793,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
         <input class="form-input" type="text" id="book-name" placeholder="e.g. Aliya Karimova">
       </div>
       <div class="form-field reveal reveal-delay-1">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" id="book-email" placeholder="your@email.com">
-      </div>
-      <div class="form-field reveal reveal-delay-2">
         <label class="form-label" data-i18n="book_phone">Phone Number</label>
         <input class="form-input" type="tel" id="book-phone" placeholder="+998 __ ___ __ __">
       </div>
-      <div class="form-field reveal reveal-delay-3">
+      <div class="form-field reveal reveal-delay-2">
         <label class="form-label" data-i18n="book_guests">Number of Guests</label>
         <select class="form-input" id="book-guests">
           <option value="">Select guests</option>
@@ -1423,32 +1848,31 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <div class="footer-top">
       <div>
         <div class="footer-logo">Bon Bon <em>Terrace</em></div>
-        <p class="footer-desc">A cozy terrace restaurant in the heart of Bukhara's old city. Open every day for breakfast, lunch, and dinner.</p>
+        <p class="footer-desc" data-i18n="footer_desc">A cozy terrace restaurant in the heart of Bukhara's old city. Open every day for breakfast, lunch, and dinner.</p>
       </div>
       <div class="footer-col">
-        <h4>Navigate</h4>
+        <h4 data-i18n="footer_nav_title">Navigate</h4>
         <ul>
-          <li><a href="#story">Our Story</a></li>
-          <li><a href="#menu">Menu</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#team">Team</a></li>
-          <li><a href="#location">Location</a></li>
-          <li><a href="#booking">Book a Table</a></li>
+          <li><a href="#story" data-i18n="nav_story">Our Story</a></li>
+          <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
+          <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+          <li><a href="#location" data-i18n="nav_location">Location</a></li>
+          <li><a href="#booking" data-i18n="nav_booking">Book a Table</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h4 data-i18n="contact_title">Contact</h4>
         <ul>
           <li><a href="tel:+998972960057">+998 97 296 00 57</a></li>
-          <li><a href="https://wa.me/998941781112">WhatsApp</a></li>
+          <li><a href="https://wa.me/998941781112" data-i18n="whatsapp_label">WhatsApp</a></li>
           <li><a href="https://www.instagram.com/bonbonterrace.uz/" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="#" style="color:var(--cream-dim)">Telegram</a></li>
+          <li><a href="#" style="color:var(--cream-dim)" data-i18n="telegram_label">Telegram</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span data-i18n="footer_text">Gavkushon St., Bukhara · +998 97 296 00 57 · Open daily, 10:00–22:00</span>
-      <span>© 2025 Bon Bon Terrace</span>
+      <span data-i18n="footer_copyright">© 2025 Bon Bon Terrace</span>
     </div>
   </div>
 </footer>
@@ -1458,12 +1882,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 const i18n = {
   en:{
     tb_hours:"Open daily · 10:00 AM – until the last guest", tb_address:"Gavkushon St., Bukhara, Uzbekistan",
-    nav_story:"Our Story", nav_menu:"Menu", nav_team:"Team", nav_location:"Location", nav_booking:"Book a Table",
+    nav_story:"Our Story", nav_menu:"Menu", nav_gallery:"Gallery", nav_location:"Location", nav_booking:"Book a Table",
+    scroll_label:"Scroll",
     eyebrow:"Restaurant · Terrace · Old City Bukhara",
     hero_title:"A terrace table,<br><em>a pot of pomegranate tea.</em>",
     hero_sub:"A cozy spot for breakfast, lunch and dinner in Bukhara's old city, loved for its terrace seating, fresh waffles, salads, and house-made cakes.",
     hero_btn:"Book a Table", hero_btn2:"View Menu",
-    story_eyebrow:"Our Story", story_title:"On the terrace",
+    story_eyebrow:"Our Story", story_title:"On the terrace", reserve_btn:"Reserve Your Table",
     terrace_p1:"Whether it's a quiet meal, a family breakfast, or dinner with friends, we keep tables both inside and out on our terrace — a favorite spot for groups and couples alike near Bukhara's old town.",
     terrace_p2:"Our kitchen is best known for Belgian and Viennese waffles, fresh cakes and cheesecakes, hearty salads, and a pot of house pomegranate tea.",
     menu_eyebrow:"Our Menu", menu_title:"From Our Kitchen", menu_sub:"Ingredients and notes are listed under each item.",
@@ -1474,9 +1899,22 @@ const i18n = {
     cat_sides:"Side Dishes", cat_coffee:"Coffee", cat_milkshakes:"Milkshakes", cat_smoothies:"Smoothies",
     cat_cocktails:"Cocktails", cat_tea:"Tea", cat_icedtea:"Iced Drinks", cat_lemonades:"Lemonades",
     cat_freshes:"Freshes", cat_detox:"Detox Drinks",
-    quote:"«Incredibly delicious food and a pleasant atmosphere, friendly service staff — everything at the highest level. We come often.»",
-    team_eyebrow:"Meet the Team", team_title:"The People Behind the Terrace", team_sub:"A small, dedicated team that treats every guest like family.",
-    team1_name:"Hostess", team1_role:"Guest Relations", team2_name:"Head Chef", team2_role:"Head of Kitchen", team3_name:"Service Team", team3_role:"Front of House",
+    stat1:"Menu Categories", stat2_num:"10 AM – Last Guest", stat2:"Open Daily", stat3:"Guests Love Us", stat4:"Fresh Ingredients",
+    gallery_eyebrow:"Gallery", gallery_title:"A Taste of Bon Bon", gallery_sub:"Sunlight on the terrace, steam over the table — moments that bring people back.",
+    video_eyebrow:"Experience", video_title:"Experience Bon Bon Terrace", video_sub:"From morning light on the terrace to candlelit evenings — step inside before you arrive.",
+    reviews_eyebrow:"Guest Reviews", reviews_title:"What Our Guests Say", reviews_sub:"Real words from real visitors to Bon Bon Terrace.",
+    reviews_scroll_hint:"Scroll for more reviews",
+    rev_food_label:"Food: 5/5", rev_food4_label:"Food: 4/5", rev_service_label:"Service: 5/5", rev_atmosphere_label:"Atmosphere: 5/5",
+    rev_recommended_label:"Recommended:",
+    rev_john:"Had a great time in the restaurant. I went twice! Food was very good and waiters lovely. Special mention to the eggplant salad, pumpkin bichak and delicious waffles. One of the best locations.",
+    rev_joshua:"We went 4 times in 9 days because the ginger tea and the food were very good. We tried the waffles that were amazing, the meat boat, the khachapuri and some sharing food. All was lovely! The staff didn't look so friendly but it was no problem as they got used to us along the way.",
+    rev_varun_meta:"2 years ago · Takeaway · Dinner · UZS 50–100k",
+    rev_varun:"A very romantic restaurant with seating on the open side road, another set of seating one step above but still outside on the balcony, and indoor seating too. The menu is decent for both veg and non-veg guests, with loads of beverage options. We ordered a vegetarian pizza and a pomegranate lemonade. The lemonade was nice but the pizza wasn't good at all — it had a burnt smell and was super bland. Tasteless 😟",
+    rev_mohammad:"Great experience and excellent service from the whole team. Special thanks to the receptionist for the warm welcome and to waiter Ibrahim for his amazing service and professionalism. Highly recommended!",
+    rev_michael:"There are many kinds of cuisines to choose from. Fruit tea looked fancy and the pepperoni pizza was super tasty and big enough for two people.",
+    whatsapp_label:"WhatsApp", message_us:"Message Us", telegram_label:"Telegram", email_label:"Email",
+    footer_desc:"A cozy terrace restaurant in the heart of Bukhara's old city. Open every day for breakfast, lunch, and dinner.",
+    footer_nav_title:"Navigate", footer_copyright:"© 2025 Bon Bon Terrace",
     loc_eyebrow:"Visit Us", loc_title:"Hours & Location", loc_sub:"Open every day — walk-ins welcome, though we recommend booking for groups.",
     hours_title:"Opening Hours", hours_val:"10:00 – until the last guest", contact_title:"Contact",
     mon:"Monday", tue:"Tuesday", wed:"Wednesday", thu:"Thursday", fri:"Friday", sat:"Saturday", sun:"Sunday",
@@ -1570,11 +2008,12 @@ const i18n = {
   },
   uz:{
     tb_hours:"Har kuni 10:00 – oxirgi mehmon ketguncha", tb_address:"Gavkushon ko'chasi, Buxoro, O'zbekiston",
-    nav_story:"Bizning hikoya", nav_menu:"Menyu", nav_team:"Jamoa", nav_location:"Joylashuv", nav_booking:"Stol band qilish",
+    nav_story:"Bizning hikoya", nav_menu:"Menyu", nav_gallery:"Galereya", nav_location:"Joylashuv", nav_booking:"Stol band qilish",
+    scroll_label:"Pastga",
     eyebrow:"Restaurant · Terrace · Eski shahar Buxoro",
     hero_sub:"Buxoro eski shahrida nonushta, tushlik va kechki ovqat uchun qulay joy.",
     hero_btn:"Stol band qiling", hero_btn2:"Menyuni ko'ring",
-    story_eyebrow:"Bizning hikoya", story_title:"Terasda",
+    story_eyebrow:"Bizning hikoya", story_title:"Terasda", reserve_btn:"Stolingizni band qiling",
     terrace_p1:"Oilaviy nonushta, do'stlar bilan kechki ovqat yoki yolg'iz dam olish — biz hammasi uchun joy tayyorlaymiz.",
     terrace_p2:"Belgiya va Vena vafellari, yangi tortlar, shirinliklar va uy anor choyi bilan mashhur.",
     menu_eyebrow:"Bizning menyu", menu_title:"Oshxonamizdan", menu_sub:"Har bir mahsulot tarkibi ko'rsatilgan.",
@@ -1585,9 +2024,22 @@ const i18n = {
     cat_sides:"Qo'shimcha taomlar", cat_coffee:"Qahva", cat_milkshakes:"Milkshake", cat_smoothies:"Smuzlar",
     cat_cocktails:"Kokteyllar", cat_tea:"Choy", cat_icedtea:"Muzli ichimliklar", cat_lemonades:"Limonadlar",
     cat_freshes:"Fresh sharbatlar", cat_detox:"Detoks ichimliklar",
-    quote:"«Juda mazali taom va yoqimli muhit, do'stona xizmat ko'rsatish — hammasi yuqori darajada. Tez-tez kelamiz.»",
-    team_eyebrow:"Jamoa bilan tanishing", team_title:"Terrasa ortidagi odamlar", team_sub:"Har bir mehmonni oiladek kutib oladigan kichik va fidokor jamoa.",
-    team1_name:"Mehmondor", team1_role:"Mehmonlar bilan ishlash", team2_name:"Bosh oshpaz", team2_role:"Oshxona boshlig'i", team3_name:"Xizmat ko'rsatish jamoasi", team3_role:"Zal",
+    stat1:"Menyu kategoriyalari", stat2_num:"10:00 – Oxirgi mehmon", stat2:"Har kuni ochiq", stat3:"Mehmonlar sevadi", stat4:"100% yangi ingredientlar",
+    gallery_eyebrow:"Galereya", gallery_title:"Bon Bon ta'mi", gallery_sub:"Terrasa ustida quyosh nuri, stol ustida bug' — odamlarni yana qaytaruvchi daqiqalar.",
+    video_eyebrow:"Tajriba", video_title:"Bon Bon Terrasani his eting", video_sub:"Ertalabki yorug'likdan sham yoqilgan kechgacha — kelishdan oldin ichkariga kirib ko'ring.",
+    reviews_eyebrow:"Mehmonlar fikri", reviews_title:"Mehmonlarimiz nima deydi", reviews_sub:"Bon Bon Terrasaga tashrif buyurganlarning haqiqiy so'zlari.",
+    reviews_scroll_hint:"Ko'proq sharhlar uchun suring",
+    rev_food_label:"Taom: 5/5", rev_food4_label:"Taom: 4/5", rev_service_label:"Xizmat: 5/5", rev_atmosphere_label:"Muhit: 5/5",
+    rev_recommended_label:"Tavsiya etiladi:",
+    rev_john:"Restoranda ajoyib vaqt o'tkazdim. Ikki marta bordim! Taom juda mazali, ofitsiantlar esa do'stona edi. Baqlajon salati, qovoqli bichak va mazali vafellarni alohida ta'kidlamoqchiman. Eng yaxshi joylardan biri.",
+    rev_joshua:"9 kun ichida 4 marta bordik, chunki zanjabil choy va taom juda mazali edi. Ajoyib vafellarni, go'shtli qayiqni, xachapuri va bo'lishilgan taomlarni tatib ko'rdik. Hammasi ajoyib edi! Xodimlar unchalik do'stona ko'rinmasdi, lekin vaqt o'tishi bilan bizga o'rganishdi.",
+    rev_varun_meta:"2 yil avval · Olib ketish · Kechki ovqat · 50–100 ming UZS",
+    rev_varun:"Yon yo'l bo'yida ochiq o'tirish joyi, bir pog'ona yuqorida balkonda yana bir o'tirish joyi va ichkarida o'tirish joyi bo'lgan juda romantik restoran. Menyu vegetarian va vegetarian bo'lmagan mehmonlar uchun yetarli, ko'plab ichimlik tanlovlari bilan. Vegetarian pitsa va anorli limonad buyurtma qildik. Limonad yoqimli edi, lekin pitsa umuman yaxshi emas edi — kuygan hidi bor edi va juda mazasiz edi. Ta'msiz 😟",
+    rev_mohammad:"Butun jamoadan ajoyib tajriba va a'lo xizmat. Mehmonlarni iliq kutib olgani uchun qabulxonaga va o'zining ajoyib xizmati va professionalligi uchun ofitsiant Ibrohimga alohida rahmat. Tavsiya qilaman!",
+    rev_michael:"Tanlash uchun ko'plab oshxonalar mavjud. Mevali choy chiroyli ko'rinardi, pepperoni pitsa esa juda mazali va ikki kishi uchun yetarlicha katta edi.",
+    whatsapp_label:"WhatsApp", message_us:"Yozing", telegram_label:"Telegram", email_label:"Elektron pochta",
+    footer_desc:"Buxoro eski shahrining markazida qulay terrasa restoran. Har kuni nonushta, tushlik va kechki ovqat uchun ochiq.",
+    footer_nav_title:"Navigatsiya", footer_copyright:"© 2025 Bon Bon Terrace",
     loc_eyebrow:"Bizga tashrif buyuring", loc_title:"Ish vaqti va joylashuv", loc_sub:"Har kuni ochiq — oldindan band qilmasdan ham kelishingiz mumkin, lekin katta guruhlar uchun tavsiya etiladi.",
     hours_title:"Ish vaqti", hours_val:"10:00 – oxirgi mehmon ketguncha", contact_title:"Aloqa",
     mon:"Dushanba", tue:"Seshanba", wed:"Chorshanba", thu:"Payshanba", fri:"Juma", sat:"Shanba", sun:"Yakshanba",
@@ -1684,11 +2136,12 @@ const i18n = {
   },
   ru:{
     tb_hours:"Открыто ежедневно · 10:00 – до последнего гостя", tb_address:"ул. Гавкушон, Бухара, Узбекистан",
-    nav_story:"О нас", nav_menu:"Меню", nav_team:"Команда", nav_location:"Адрес", nav_booking:"Забронировать стол",
+    nav_story:"О нас", nav_menu:"Меню", nav_gallery:"Галерея", nav_location:"Адрес", nav_booking:"Забронировать стол",
+    scroll_label:"Листайте вниз",
     eyebrow:"Ресторан · Терраса · Старый город Бухара",
     hero_sub:"Уютное место для завтрака, обеда и ужина в старом городе Бухары.",
     hero_btn:"Забронировать стол", hero_btn2:"Смотреть меню",
-    story_eyebrow:"О нас", story_title:"На террасе",
+    story_eyebrow:"О нас", story_title:"На террасе", reserve_btn:"Забронировать стол",
     terrace_p1:"Будь то спокойный обед, семейный завтрак или ужин с друзьями — у нас найдётся стол и на террасе, и в зале.",
     terrace_p2:"Наша кухня известна бельгийскими и венскими вафлями, свежей выпечкой, сытными салатами и фирменным гранатовым чаем.",
     menu_eyebrow:"Наше меню", menu_title:"Из нашей кухни", menu_sub:"Состав и пометки указаны под каждым блюдом.",
@@ -1699,9 +2152,22 @@ const i18n = {
     cat_sides:"Гарниры", cat_coffee:"Кофе", cat_milkshakes:"Молочные коктейли", cat_smoothies:"Смузи",
     cat_cocktails:"Коктейли", cat_tea:"Чай", cat_icedtea:"Холодные напитки", cat_lemonades:"Лимонады",
     cat_freshes:"Фрэши", cat_detox:"Детокс-напитки",
-    quote:"«Невероятно вкусная еда и приятная атмосфера, добродушный персонал — всё на высшем уровне. Приходим часто.»",
-    team_eyebrow:"Знакомьтесь с командой", team_title:"Люди за террасой", team_sub:"Небольшая и преданная команда, которая принимает каждого гостя как родного.",
-    team1_name:"Хозяйка зала", team1_role:"Работа с гостями", team2_name:"Шеф-повар", team2_role:"Руководитель кухни", team3_name:"Команда обслуживания", team3_role:"Зал",
+    stat1:"Категории меню", stat2_num:"10:00 – До последнего гостя", stat2:"Работаем ежедневно", stat3:"Гости нас любят", stat4:"Свежие ингредиенты",
+    gallery_eyebrow:"Галерея", gallery_title:"Вкус Bon Bon", gallery_sub:"Солнечный свет на террасе, пар над столом — моменты, которые возвращают снова.",
+    video_eyebrow:"Атмосфера", video_title:"Почувствуйте Bon Bon Terrace", video_sub:"От утреннего света на террасе до вечера при свечах — загляните прежде чем приехать.",
+    reviews_eyebrow:"Отзывы гостей", reviews_title:"Что говорят наши гости", reviews_sub:"Настоящие слова настоящих посетителей Bon Bon Terrace.",
+    reviews_scroll_hint:"Листайте, чтобы увидеть больше отзывов",
+    rev_food_label:"Еда: 5/5", rev_food4_label:"Еда: 4/5", rev_service_label:"Сервис: 5/5", rev_atmosphere_label:"Атмосфера: 5/5",
+    rev_recommended_label:"Рекомендуем:",
+    rev_john:"Отлично провёл время в ресторане. Был дважды! Еда была очень вкусной, официанты — приятными. Особенно хочу отметить салат из баклажанов, бичак с тыквой и восхитительные вафли. Одно из лучших мест.",
+    rev_joshua:"Мы приходили 4 раза за 9 дней, потому что имбирный чай и еда были очень хороши. Попробовали вафли — они были потрясающие, мясную лодочку, хачапури и несколько блюд на компанию. Всё было прекрасно! Персонал поначалу казался не очень дружелюбным, но со временем привык к нам.",
+    rev_varun_meta:"2 года назад · На вынос · Ужин · 50–100 тыс. сум",
+    rev_varun:"Очень романтичный ресторан с местами на открытой стороне у дороги, ещё одним рядом мест ступенью выше на балконе и местами внутри помещения. Меню достойное как для вегетарианцев, так и для тех, кто ест мясо, с большим выбором напитков. Мы заказали вегетарианскую пиццу и гранатовый лимонад. Лимонад был приятным, но пицца оказалась совсем не хороша — с запахом гари и очень пресная. Безвкусная 😟",
+    rev_mohammad:"Отличный опыт и превосходное обслуживание от всей команды. Особая благодарность администратору за тёплый приём и официанту Ибрагиму за прекрасный сервис и профессионализм. Очень рекомендую!",
+    rev_michael:"Здесь много разных видов кухни на выбор. Фруктовый чай выглядел изысканно, а пицца пепперони была очень вкусной и достаточно большой на двоих.",
+    whatsapp_label:"WhatsApp", message_us:"Написать нам", telegram_label:"Telegram", email_label:"Эл. почта",
+    footer_desc:"Уютный ресторан с террасой в самом сердце старого города Бухары. Открыт ежедневно для завтрака, обеда и ужина.",
+    footer_nav_title:"Навигация", footer_copyright:"© 2025 Bon Bon Terrace",
     loc_eyebrow:"Приходите к нам", loc_title:"Часы работы и расположение", loc_sub:"Открыто ежедневно — бронирование не обязательно, но для групп рекомендуется.",
     hours_title:"Часы работы", hours_val:"10:00 – до последнего гостя", contact_title:"Контакты",
     mon:"Понедельник", tue:"Вторник", wed:"Среда", thu:"Четверг", fri:"Пятница", sat:"Суббота", sun:"Воскресенье",
@@ -1798,11 +2264,12 @@ const i18n = {
   },
   es:{
     tb_hours:"Abierto a diario · 10:00 – hasta el último cliente", tb_address:"Calle Gavkushon, Bukhara, Uzbekistán",
-    nav_story:"Nuestra historia", nav_menu:"Menú", nav_team:"Equipo", nav_location:"Ubicación", nav_booking:"Reservar mesa",
+    nav_story:"Nuestra historia", nav_menu:"Menú", nav_gallery:"Galería", nav_location:"Ubicación", nav_booking:"Reservar mesa",
+    scroll_label:"Desplázate",
     eyebrow:"Restaurante · Terraza · Ciudad Antigua de Bukhara",
     hero_sub:"Un acogedor rincón para desayunar, almorzar y cenar en la ciudad antigua de Bukhara.",
     hero_btn:"Reservar mesa", hero_btn2:"Ver menú",
-    story_eyebrow:"Nuestra historia", story_title:"En la terraza",
+    story_eyebrow:"Nuestra historia", story_title:"En la terraza", reserve_btn:"Reservar su mesa",
     terrace_p1:"Ya sea una comida tranquila, un desayuno familiar o una cena con amigos, tenemos mesas tanto dentro como en nuestra terraza.",
     terrace_p2:"Somos conocidos por nuestros gofres belgas y vieneses, pasteles frescos, ensaladas abundantes y nuestro té de granada casero.",
     menu_eyebrow:"Nuestro menú", menu_title:"De nuestra cocina", menu_sub:"Los ingredientes se indican debajo de cada plato.",
@@ -1813,9 +2280,22 @@ const i18n = {
     cat_sides:"Guarniciones", cat_coffee:"Café", cat_milkshakes:"Batidos", cat_smoothies:"Smoothies",
     cat_cocktails:"Cócteles", cat_tea:"Té", cat_icedtea:"Bebidas frías", cat_lemonades:"Limonadas",
     cat_freshes:"Zumos frescos", cat_detox:"Bebidas detox",
-    quote:"«Comida increíblemente deliciosa y ambiente agradable, personal de servicio amable — todo al más alto nivel. Venimos con frecuencia.»",
-    team_eyebrow:"Conoce al equipo", team_title:"Las personas detrás de la terraza", team_sub:"Un equipo pequeño y dedicado que trata a cada huésped como familia.",
-    team1_name:"Anfitriona", team1_role:"Relaciones con huéspedes", team2_name:"Chef principal", team2_role:"Jefe de cocina", team3_name:"Equipo de servicio", team3_role:"Sala",
+    stat1:"Categorías del menú", stat2_num:"10:00 – Último cliente", stat2:"Abierto a diario", stat3:"Los clientes nos adoran", stat4:"Ingredientes frescos",
+    gallery_eyebrow:"Galería", gallery_title:"Un sabor de Bon Bon", gallery_sub:"Luz solar en la terraza, vapor sobre la mesa — momentos que hacen que la gente vuelva.",
+    video_eyebrow:"Experiencia", video_title:"Experimenta Bon Bon Terrace", video_sub:"Desde la luz matutina en la terraza hasta las veladas con velas — asómate antes de llegar.",
+    reviews_eyebrow:"Opiniones de huéspedes", reviews_title:"Lo que dicen nuestros huéspedes", reviews_sub:"Palabras reales de visitantes reales de Bon Bon Terrace.",
+    reviews_scroll_hint:"Desliza para ver más reseñas",
+    rev_food_label:"Comida: 5/5", rev_food4_label:"Comida: 4/5", rev_service_label:"Servicio: 5/5", rev_atmosphere_label:"Ambiente: 5/5",
+    rev_recommended_label:"Recomendado:",
+    rev_john:"Lo pasé genial en el restaurante. ¡Fui dos veces! La comida estaba muy buena y los camareros eran encantadores. Mención especial a la ensalada de berenjena, el bichak de calabaza y los deliciosos gofres. Uno de los mejores lugares.",
+    rev_joshua:"Fuimos 4 veces en 9 días porque el té de jengibre y la comida eran muy buenos. Probamos los gofres, que estaban increíbles, el barco de carne, el khachapuri y algunos platos para compartir. ¡Todo estuvo genial! El personal no parecía muy amable al principio, pero no fue problema porque se acostumbraron a nosotros con el tiempo.",
+    rev_varun_meta:"Hace 2 años · Para llevar · Cena · 50–100 mil UZS",
+    rev_varun:"Un restaurante muy romántico con asientos al aire libre junto a la calle lateral, otro conjunto de asientos un escalón más arriba pero aún fuera en el balcón, y asientos en el interior. El menú es decente tanto para clientes vegetarianos como no vegetarianos, con muchas opciones de bebidas. Pedimos una pizza vegetariana y una limonada de granada. La limonada estaba rica, pero la pizza no estaba nada buena — tenía olor a quemado y era muy sosa. Sin sabor 😟",
+    rev_mohammad:"Gran experiencia y excelente servicio de todo el equipo. Un agradecimiento especial a la recepcionista por la cálida bienvenida y al camarero Ibrahim por su increíble servicio y profesionalismo. ¡Muy recomendable!",
+    rev_michael:"Hay muchos tipos de cocina para elegir. El té de frutas se veía elegante y la pizza de pepperoni estaba muy rica y era lo suficientemente grande para dos personas.",
+    whatsapp_label:"WhatsApp", message_us:"Escríbenos", telegram_label:"Telegram", email_label:"Correo electrónico",
+    footer_desc:"Un acogedor restaurante con terraza en el corazón de la ciudad antigua de Bukhara. Abierto todos los días para el desayuno, almuerzo y cena.",
+    footer_nav_title:"Navegación", footer_copyright:"© 2025 Bon Bon Terrace",
     loc_eyebrow:"Visítanos", loc_title:"Horario y ubicación", loc_sub:"Abierto todos los días — sin reserva previa, aunque para grupos se recomienda reservar.",
     hours_title:"Horario", hours_val:"10:00 – hasta el último cliente", contact_title:"Contacto",
     mon:"Lunes", tue:"Martes", wed:"Miércoles", thu:"Jueves", fri:"Viernes", sat:"Sábado", sun:"Domingo",
@@ -2063,11 +2543,142 @@ function submitBooking() {
   msgEl.className = 'book-msg success'; msgEl.textContent = d.book_success; msgEl.style.display='block';
 }
 
-// ── YOUTUBE LAZY LOAD ─────────────────────────────
-function loadYT() {
-  const wrap = document.getElementById('ytWrap');
-  wrap.innerHTML = '<iframe class="yt-iframe" src="https://www.youtube-nocookie.com/embed/WPRm04AegtE?autoplay=1&rel=0&modestbranding=1&color=white" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
-}
+// ── LUXURIOUS SMOOTH SCROLL ────────────────────────
+(function(){
+  // Silky ease: slow start, glide, feather stop
+  function easeInOutQuart(t){
+    return t < 0.5 ? 8*t*t*t*t : 1 - Math.pow(-2*t+2,4)/2;
+  }
+
+  function smoothScrollTo(target, duration){
+    duration = duration || 1100;
+    const startY = window.scrollY;
+    const endY   = target.getBoundingClientRect().top + startY - 80; // 80px nav offset
+    const delta  = endY - startY;
+    let start = null;
+
+    function step(ts){
+      if (!start) start = ts;
+      const elapsed = ts - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = easeInOutQuart(progress);
+      window.scrollTo(0, startY + delta * ease);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Intercept all anchor links that point to #sections
+  document.addEventListener('click', function(e){
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute('href').slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    // Close mobile menu if open
+    const mm = document.getElementById('mobileMenu');
+    if (mm && mm.classList.contains('open')) mm.classList.remove('open');
+    smoothScrollTo(target, 1200);
+  });
+})();
+
+// ── FUTURISTIC JS ─────────────────────────────────
+
+// Scroll progress bar
+(function(){
+  const bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
+    bar.style.width = (scrolled * 100) + '%';
+  }, { passive: true });
+})();
+
+// Cursor glow (desktop only)
+(function(){
+  if (window.matchMedia('(hover:none)').matches) return;
+  const glow = document.getElementById('cursor-glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  }, { passive: true });
+})();
+
+// Hero particle system
+(function(){
+  const canvas = document.getElementById('hero-particles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(a, b){ return a + Math.random() * (b - a); }
+
+  class Particle {
+    constructor(){
+      this.reset();
+      this.y = rand(0, H); // start anywhere vertically
+    }
+    reset(){
+      this.x = rand(0, W);
+      this.y = H + 10;
+      this.size = rand(0.5, 2.2);
+      this.speed = rand(0.15, 0.55);
+      this.drift = rand(-0.12, 0.12);
+      this.alpha = rand(0.2, 0.7);
+      this.fade = rand(0.002, 0.006);
+      this.growing = true;
+    }
+    update(){
+      this.y -= this.speed;
+      this.x += this.drift;
+      if (this.growing){
+        this.alpha += 0.01;
+        if (this.alpha > 0.7) this.growing = false;
+      } else {
+        this.alpha -= this.fade;
+      }
+      if (this.y < -10 || this.alpha <= 0) this.reset();
+    }
+    draw(){
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, this.alpha);
+      // gold glow
+      const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 3);
+      g.addColorStop(0,  'rgba(232,195,107,0.9)');
+      g.addColorStop(0.4,'rgba(201,145,46,0.4)');
+      g.addColorStop(1,  'rgba(201,145,46,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+      ctx.fill();
+      // bright core
+      ctx.fillStyle = 'rgba(255,240,180,0.95)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  const COUNT = 55;
+  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
 
 // Init
 buildGallery();
